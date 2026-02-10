@@ -1,5 +1,11 @@
 # PACE SE2026 (Prompt Assistant & Creative Engine)
 
+🌐 Coba Sekarang:
+https://faldodaffa.github.io/pace-generator/
+
+💻 Source Code (GitHub):
+https://github.com/faldodaffa/pace-generator
+
 PACE SE2026 adalah aplikasi generator prompt cerdas berbasis web yang dirancang khusus untuk mendukung Tim Kerja Kehumasan Badan Pusat Statistik (BPS) dalam memproduksi aset visual Sensus Ekonomi 2026.
 
 Aplikasi ini berfungsi sebagai jembatan antara standar branding BPS dan teknologi Generative AI (seperti Google Gemini, Midjourney, atau DALL-E), memastikan setiap gambar yang dihasilkan memiliki konsistensi karakter, akurasi atribut, dan relevansi konteks ekonomi.
