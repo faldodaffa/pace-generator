@@ -174,9 +174,9 @@
                 <div>
                     <span class="text-xs font-semibold text-gray-500 block mb-2">Warna Kulit (Skin Tone):</span>
                     <select id="skinToneSelect" class="select-custom w-full bg-[#fffbee] border border-gray-300 text-[#231f20] text-sm rounded-lg block p-2.5 focus:border-[#f79039] focus:ring-[#f79039]">
-                        <option value="original">Kuning Langsat (Fair/Light)</option>
-                        <option value="tan">Sawo Matang (Tan/Medium)</option>
-                        <option value="dark">Gelap Eksotis (Dark/Black)</option>
+                        <option value="original">Kuning Langsat </option>
+                        <option value="tan">Sawo Matang </option>
+                        <option value="dark">Gelap Eksotis </option>
                     </select>
                 </div>
             </div>
@@ -714,7 +714,7 @@
                 let recommendedImageWeight = "HIGH (1.0 - 1.2)";
 
                 if (skinTone === 'dark') {
-                    ethnicityDesc = "Dark black skin tone covering FACE, NECK, ARMS, and HANDS.";
+                    ethnicityDesc = "Dark brown skin tone covering FACE, NECK, ARMS, and HANDS.";
                     skinInstruction = "ENSURE UNIFORM DARK SKIN TONE ON FACE AND BODY. DO NOT MAKE HANDS WHITE.";
                     recommendedImageWeight = "LOW to MEDIUM (0.6 - 0.8) - Critical to allow skin color change";
                 } else if (skinTone === 'tan') {
@@ -750,7 +750,7 @@
                 if (gender === 'female_hijab') {
                     additionalNegativePrompts += ", visible hair, hair roots, hair texture";
                     genderDesc = `Female version of Bung Itung (Hijab). Wearing yellow hijab tucked in. **Note: ${headgearActive ? headgearDesc + ' is worn ON TOP of the hijab.' : ''} ABSOLUTELY NO HAIR VISIBLE.** Facial features: ${facialFeatures}.`;
-                     if (skinTone === 'dark') ethnicityDesc = "Dark black skin tone covering FACE and HANDS (Body covered).";
+                     if (skinTone === 'dark') ethnicityDesc = "Dark brown skin tone covering FACE and HANDS (Body covered).";
                 } else {
                     let hairDescription = "short neat black hair."; 
                     if (gender !== 'male') hairDescription = "Hair: Ponytail."; 
