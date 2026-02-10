@@ -39,4 +39,3 @@ Tim Pelaksana SE 2026 - Tim Kerja Kehumasan
 BPS Provinsi Papua
 © 2026
 Konsep & Pengembangan: @faldodaffa
-<img width="468" height="645" alt="image" src="https://github.com/user-attachments/assets/e2dd0111-7468-4ff5-8f91-989da6b20650" />
