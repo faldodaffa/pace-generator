@@ -1,879 +1,898 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PACE - Prompt Assistant & Creative Engine v5.3 (Final UX)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        /* SE2026 Brand Identity Colors */
-        :root {
-            --se-orange: #f79039;       
-            --se-yellow-asa: #febd26;   
-            --se-yellow-supp: #ffd635;  
-            --se-light-bg: #fffbee;     
-            --se-dark: #231f20;         
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--se-light-bg);
-            color: var(--se-dark);
-        }
- 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #aaa; }
- 
-        .input-card {
-            transition: all 0.3s ease;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .input-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            border-color: var(--se-yellow-asa);
-        }
- 
-        .select-custom {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23231f20' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            appearance: none;
-        }
- 
-        /* Option Cards Styling */
-        .option-card {
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-            background-color: #fff;
-        }
-        .option-card:hover {
-            border-color: var(--se-yellow-asa);
-            background-color: #fffdf5;
-        }
-        .option-card.selected {
-            border-color: var(--se-orange);
-            background-color: #fff8f0;
-            box-shadow: 0 4px 6px -1px rgba(247, 144, 57, 0.2);
-            position: relative;
-        }
-        .option-card.selected::after {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: var(--se-orange);
-        }
-        
-        /* grids */
-        .pose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
-        .expression-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
- 
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--se-orange) 0%, #e68a35 100%);
-            color: white;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #e68a35 0%, #d57e2f 100%);
-            transform: translateY(-1px);
-        }
- 
-        .gender-btn.selected {
-            background-color: var(--se-yellow-asa);
-            border-color: var(--se-orange);
-            color: var(--se-dark);
-            font-weight: 700;
-        }
-        
-        /* JSON Syntax Highlighting */
-        .json-key { color: #0284c7; }
-        .json-string { color: #d97706; }
-        .json-number { color: #16a34a; }
-        .json-boolean { color: #dc2626; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PACE - Prompt Assistant & Creative Engine v5.3 (Final UX)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        /* SE2026 Brand Identity Colors */
+        :root {
+            --se-orange: #f79039;       
+            --se-yellow-asa: #febd26;   
+            --se-yellow-supp: #ffd635;  
+            --se-light-bg: #fffbee;     
+            --se-dark: #231f20;         
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--se-light-bg);
+            color: var(--se-dark);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+        .input-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .input-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--se-yellow-asa);
+        }
+
+        .select-custom {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23231f20' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            appearance: none;
+        }
+
+        /* Option Cards Styling */
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background-color: #fff;
+        }
+        .option-card:hover {
+            border-color: var(--se-yellow-asa);
+            background-color: #fffdf5;
+        }
+        .option-card.selected {
+            border-color: var(--se-orange);
+            background-color: #fff8f0;
+            box-shadow: 0 4px 6px -1px rgba(247, 144, 57, 0.2);
+            position: relative;
+        }
+        .option-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: var(--se-orange);
+        }
+        
+        /* grids */
+        .pose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+        .expression-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--se-orange) 0%, #e68a35 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #e68a35 0%, #d57e2f 100%);
+            transform: translateY(-1px);
+        }
+
+        .gender-btn.selected {
+            background-color: var(--se-yellow-asa);
+            border-color: var(--se-orange);
+            color: var(--se-dark);
+            font-weight: 700;
+        }
+        
+        /* JSON Syntax Highlighting */
+        .json-key { color: #0284c7; }
+        .json-string { color: #d97706; }
+        .json-number { color: #16a34a; }
+        .json-boolean { color: #dc2626; }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col">
- 
-    <!-- Header -->
-    <header class="bg-[#231f20] text-white shadow-lg border-b-4 border-[#f79039] sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="bg-[#febd26] text-[#231f20] p-2 rounded-lg font-bold text-xl h-12 w-12 flex items-center justify-center shadow-md">
-                    SE
-                </div>
-                <div>
-                    <h1 class="text-lg md:text-2xl font-bold tracking-tight">PACE SE2026 v5.3</h1>
-                    <p class="text-[#febd26] text-xs md:text-sm font-medium">Prompt Assistant & Creative Engine</p>
-                </div>
-            </div>
-            <!-- Header Buttons -->
-            <div class="hidden md:flex items-center gap-3 text-right text-xs">
-                <button onclick="toggleAssetModal()" class="inline-flex items-center bg-transparent border border-[#febd26] text-[#febd26] hover:bg-[#febd26] hover:text-[#231f20] font-bold py-2 px-4 rounded transition-colors shadow-sm">
-                    <i class="fas fa-folder-open mr-2"></i>Aset Referensi
-                </button>
-                <a href="#tutorial" class="inline-flex items-center bg-[#f79039] hover:bg-[#e68a35] text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
-                    <i class="fas fa-book-open mr-2"></i>Petunjuk
-                </a>
-            </div>
-        </div>
-    </header>
- 
-    <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
-        
-        <!-- LEFT COLUMN: Character & Style (4 cols) -->
-        <div class="lg:col-span-4 space-y-5">
-            
-            <!-- 1. Format Gambar -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-image mr-2 text-[#f79039]"></i>1. Format Gambar
-                </label>
-                <div class="grid grid-cols-2 gap-3">
-                    <div onclick="selectFormat('single')" id="fmt-single" class="option-card selected p-3 rounded-lg text-center">
-                        <i class="fas fa-user text-2xl text-[#f79039] mb-2"></i>
-                        <div class="text-xs font-bold">Single Image</div>
-                        <div class="text-[10px] text-gray-500">Pose Spesifik</div>
-                    </div>
-                    <div onclick="selectFormat('multipose')" id="fmt-multipose" class="option-card p-3 rounded-lg text-center">
-                        <i class="fas fa-users-viewfinder text-2xl text-[#febd26] mb-2"></i>
-                        <div class="text-xs font-bold">Multipose (2x2)</div>
-                        <div class="text-[10px] text-gray-500">Dinamis (No Side View)</div>
-                    </div>
-                </div>
-                <input type="hidden" id="formatValue" value="single">
-            </div>
- 
-            <!-- 2. Gender & Skin Tone -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-user-circle mr-2 text-[#f79039]"></i>2. Identitas Karakter
-                </label>
-                
-                <div class="mb-4">
-                    <span class="text-xs font-semibold text-gray-500 block mb-2">Gender:</span>
-                    <div class="flex gap-2">
-                        <button type="button" onclick="selectGender('male')" id="btn-male" class="gender-btn selected flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Pria</button>
-                        <button type="button" onclick="selectGender('female_nonhijab')" id="btn-female_nonhijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Wanita</button>
-                        <button type="button" onclick="selectGender('female_hijab')" id="btn-female_hijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Hijab</button>
-                    </div>
-                    <input type="hidden" id="genderValue" value="male">
-                </div>
- 
-                <div>
-                    <span class="text-xs font-semibold text-gray-500 block mb-2">Warna Kulit (Skin Tone):</span>
-                    <select id="skinToneSelect" class="select-custom w-full bg-[#fffbee] border border-gray-300 text-[#231f20] text-sm rounded-lg block p-2.5 focus:border-[#f79039] focus:ring-[#f79039]">
-                        <option value="original">Kuning Langsat (Fair/Light)</option>
-                        <option value="tan">Sawo Matang (Tan/Medium)</option>
-                        <option value="dark">Gelap Eksotis (Dark/Black)</option>
-                    </select>
-                </div>
-            </div>
- 
-            <!-- 3. Accessories (Wearables) -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-hat-cowboy mr-2 text-[#f79039]"></i>3. Aksesoris Kepala (Wearables)
-                </label>
- 
-                <!-- Headgear (Radio - Mutually Exclusive) -->
-                <div class="mb-4 space-y-2">
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="radio" name="headgear" value="none" class="text-[#f79039] focus:ring-[#f79039]" checked onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm">Tanpa Topi Khusus</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="radio" name="headgear" value="topi_se2026" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm font-semibold text-[#231f20]">Topi SE2026 (Hitam)</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="radio" name="headgear" value="mahkota_papua" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm font-semibold text-[#231f20]">Mahkota Adat Papua (Kasuari)</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="radio" name="headgear" value="contextual" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm font-semibold text-blue-600">Sesuai Sektor (Helm/Caping)</span>
-                    </label>
-                    
-                    <!-- Custom Headgear Input -->
-                    <div class="border-t border-dashed border-gray-300 pt-2 mt-1">
-                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                            <input type="radio" name="headgear" value="custom_headgear" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', true)">
-                            <span class="text-sm font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Topi Adat/Lokal</span>
-                        </label>
-                        <input type="text" id="customHeadgearText" placeholder="Contoh: Udeng Bali / Blangkon Jawa / Ti'i Langga" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
-                    </div>
-                </div>
- 
-                <label class="block text-sm font-bold text-[#231f20] mb-3 mt-4">
-                    <i class="fas fa-briefcase mr-2 text-[#f79039]"></i>Aksesoris Badan/Tangan
-                </label>
-                <!-- Body/Hand (Checkbox - Multiple Allowed) -->
-                <div class="space-y-2">
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="checkbox" id="acc_noken" class="text-[#f79039] rounded focus:ring-[#f79039]">
-                        <span class="text-sm">Tas Noken Papua</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="checkbox" id="acc_hpse" class="text-[#f79039] rounded focus:ring-[#f79039]">
-                        <span class="text-sm font-bold text-[#231f20]">HP Logo SE2026</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                        <input type="checkbox" id="acc_glasses" class="text-[#f79039] rounded focus:ring-[#f79039]">
-                        <span class="text-sm">Kacamata</span>
-                    </label>
- 
-                    <!-- Custom Accessory Input -->
-                    <div class="border-t border-dashed border-gray-300 pt-2 mt-1">
-                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
-                            <input type="checkbox" id="acc_custom" class="text-[#f79039] rounded focus:ring-[#f79039]" onchange="toggleCustomInput('accessory', this.checked)">
-                            <span class="text-sm font-bold text-[#f79039]"><i class="fas fa-hand-holding mr-1"></i> Custom Pegang (Buku/Tablet/dll)</span>
-                        </label>
-                        <input type="text" id="customAccessoryText" placeholder="Contoh: Buku, Pensil, Tablet, Kain Ulos, Sarung Batik" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
-                    </div>
-                </div>
-            </div>
- 
-        </div>
- 
-        <!-- MIDDLE COLUMN: Context & Background (5 cols) -->
-        <div class="lg:col-span-5 space-y-5">
- 
-             <!-- NEW: Expression Selection -->
-             <div id="expressionSection" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-face-smile mr-2 text-[#f79039]"></i>Ekspresi Wajah / Emosi
-                </label>
-                
-                <div class="expression-grid">
-                    <div onclick="selectExpression('happy')" id="expr-happy" class="option-card selected p-2 rounded text-center flex flex-col items-center justify-center h-16 bg-yellow-50 border-yellow-200">
-                        <i class="fas fa-face-laugh-beam text-xl text-[#f79039] mb-1"></i>
-                        <span class="text-[10px] leading-tight font-bold">Ceria</span>
-                    </div>
-                    <div onclick="selectExpression('sad')" id="expr-sad" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-sad-tear text-xl text-blue-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Sedih</span>
-                    </div>
-                    <div onclick="selectExpression('angry')" id="expr-angry" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-angry text-xl text-red-600 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Marah</span>
-                    </div>
-                    <div onclick="selectExpression('fear')" id="expr-fear" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-flushed text-xl text-purple-600 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Takut</span>
-                    </div>
-                    <div onclick="selectExpression('shy')" id="expr-shy" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-kiss-wink-heart text-xl text-pink-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Malu</span>
-                    </div>
-                </div>
-                <input type="hidden" id="expressionValue" value="happy">
-            </div>
-            
-            <!-- 4. Context (KBLI 2025) -->
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#febd26]">
-                <label class="block text-lg font-bold text-[#231f20] mb-1">
-                    <i class="fas fa-building mr-2 text-[#f79039]"></i>4. Konteks Sektor (KBLI 2025)
-                </label>
-                <p class="text-xs text-gray-500 mb-4">Pilih kategori untuk menyesuaikan visual pakaian & alat.</p>
-                
-                <select id="sectorSelect" class="select-custom w-full bg-[#fffbee] border border-yellow-300 text-[#231f20] text-sm rounded-lg focus:ring-[#f79039] focus:border-[#f79039] block p-3 mb-4 font-medium">
-                    <option value="NONE" class="font-bold">-- Tanpa Konteks Sektor (Polos) --</option>
-                    <option value="A">A. Pertanian, Kehutanan, dan Perikanan</option>
-                    <option value="B">B. Pertambangan dan Penggalian</option>
-                    <option value="C">C. Industri Pengolahan (Pabrik/Manufaktur)</option>
-                    <option value="D">D. Pengadaan Listrik, Gas, Uap/Air Panas</option>
-                    <option value="E">E. Pengadaan Air & Pengelolaan Limbah</option>
-                    <option value="F">F. Konstruksi (Bangunan)</option>
-                    <option value="G">G. Perdagangan Besar & Eceran</option>
-                    <option value="H">H. Pengangkutan & Pergudangan</option>
-                    <option value="I">I. Penyediaan Akomodasi & Makan Minum</option>
-                    <option value="J">J. Informasi & Komunikasi</option>
-                    <option value="K">K. Aktivitas Keuangan & Asuransi</option>
-                    <option value="L">L. Real Estat</option>
-                    <option value="M">M. Aktivitas Profesional, Ilmiah & Teknis</option>
-                    <option value="N">N. Aktivitas Penyewaan & Sewa Guna Usaha</option>
-                    <option value="O">O. Administrasi Pemerintahan & Pertahanan</option>
-                    <option value="P">P. Pendidikan</option>
-                    <option value="Q">Q. Aktivitas Kesehatan Manusia & Sosial</option>
-                    <option value="R">R. Kesenian, Hiburan & Rekreasi</option>
-                    <option value="S">S. Aktivitas Jasa Lainnya</option>
-                    <option value="T">T. Aktivitas Rumah Tangga</option>
-                    <option value="U">U. Aktivitas Badan Internasional</option>
-                    <option value="STAKEHOLDER">-- KHUSUS: Stakeholder / Pejabat --</option>
-                </select>
- 
-                <!-- Baju Option -->
-                <div class="bg-[#fffbee] p-3 rounded-lg border border-yellow-100">
-                    <span class="text-xs font-bold text-gray-600 block mb-2">Pilihan Pakaian Utama:</span>
-                    <div class="flex flex-col gap-2">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="attire" value="original" class="text-[#f79039] focus:ring-[#f79039]" checked onclick="toggleCustomInput('attire', false)">
-                            <span class="ml-2 text-sm text-gray-700">Seragam Asli (Rompi Sensus)</span>
-                        </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="attire" value="contextual" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('attire', false)">
-                            <span class="ml-2 text-sm text-gray-700">Sesuai Profesi KBLI (Dokter/Insinyur/dll)</span>
-                        </label>
-                        
-                        <!-- Custom Attire -->
-                        <div class="border-t border-gray-200 mt-1 pt-1">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="attire" value="custom_attire" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('attire', true)">
-                                <span class="ml-2 text-sm font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Pakaian</span>
-                            </label>
-                            <input type="text" id="customAttireText" placeholder="Contoh: Baju Batik Jawa / Baju Adat Bali" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
-                        </div>
-                    </div>
-                </div>
-            </div>
- 
-            <!-- 5. Background Setting -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-image mr-2 text-[#f79039]"></i>5. Pengaturan Latar Belakang
-                </label>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <label class="cursor-pointer">
-                        <input type="radio" name="bg_mode" value="prop_focus" class="peer sr-only" checked onchange="updateBgDesc()">
-                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-[#fffbee] peer-checked:border-[#f79039] peer-checked:bg-[#fffbee] transition-all">
-                            <div class="text-center">
-                                <i class="fas fa-box-open text-2xl text-gray-600 mb-2"></i>
-                                <h3 class="font-bold text-sm">Fokus Barang/Alat</h3>
-                                <p class="text-[10px] text-gray-500 mt-1">Latar bersih, dikelilingi alat kerja/objek sektor di dekat kaki secara natural.</p>
-                            </div>
-                        </div>
-                    </label>
- 
-                    <label class="cursor-pointer">
-                        <input type="radio" name="bg_mode" value="environment" class="peer sr-only" onchange="updateBgDesc()">
-                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-[#fffbee] peer-checked:border-[#f79039] peer-checked:bg-[#fffbee] transition-all">
-                            <div class="text-center">
-                                <i class="fas fa-mountain-sun text-2xl text-gray-600 mb-2"></i>
-                                <h3 class="font-bold text-sm">Pemandangan Jauh</h3>
-                                <p class="text-[10px] text-gray-500 mt-1">Background relevan terlihat samar di kejauhan (Depth of Field).</p>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            </div>
- 
-             <!-- 6. Pose Selection (Conditional) -->
-             <div id="poseSection" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-person-walking mr-2 text-[#f79039]"></i>6. Pilih Pose (Khusus Single Image)
-                </label>
-                
-                <!-- 4x2 Grid for Poses (8 Poses Total) -->
-                <div class="pose-grid">
-                    <!-- Row 1 -->
-                    <div onclick="selectPose('random')" id="pose-random" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20 bg-yellow-50 border-yellow-200">
-                        <i class="fas fa-dice text-xl text-[#f79039] mb-1"></i>
-                        <span class="text-[10px] leading-tight font-bold">Random</span>
-                    </div>
-                    <div onclick="selectPose('thumbs_up')" id="pose-thumbs_up" class="option-card selected p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-thumbs-up text-xl text-[#f79039] mb-1"></i>
-                        <span class="text-[10px] leading-tight">Jempol</span>
-                    </div>
-                    <div onclick="selectPose('pointing')" id="pose-pointing" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-hand-point-right text-xl text-green-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Menunjuk</span>
-                    </div>
-                    <div onclick="selectPose('waving')" id="pose-waving" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-hand-spock text-xl text-orange-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Menyapa</span>
-                    </div>
-                    
-                    <!-- Row 2 -->
-                    <div onclick="selectPose('open_palms')" id="pose-open_palms" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-hands text-xl text-blue-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Menengadah</span>
-                    </div>
-                    <div onclick="selectPose('hand_on_chest')" id="pose-hand_on_chest" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-hand-holding-heart text-xl text-red-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Pelayanan</span>
-                    </div>
-                    <div onclick="selectPose('thank_you')" id="pose-thank_you" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-praying-hands text-xl text-purple-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Terima Kasih</span>
-                    </div>
-                    <div onclick="selectPose('ready')" id="pose-ready" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                         <i class="fas fa-user-check text-xl text-teal-600 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Siap (Sigap)</span>
-                    </div>
-                </div>
-                <input type="hidden" id="poseValue" value="thumbs_up">
-            </div>
- 
-        </div>
- 
-        <!-- RIGHT COLUMN: Output & Tutorial (3 cols) -->
-        <div class="lg:col-span-3 space-y-5">
-            
-            <button onclick="generatePrompt()" class="btn-primary w-full font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 flex items-center justify-center gap-2 text-lg">
-                <i class="fas fa-wand-magic-sparkles"></i> BUAT PROMPT (JSON)
-            </button>
- 
-            <!-- Output Display -->
-            <div class="bg-[#231f20] rounded-xl shadow-inner border border-gray-600 overflow-hidden flex flex-col h-[400px]">
-                <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-gray-600 shrink-0">
-                    <span class="text-xs text-gray-400 font-mono">prompt_data.json</span>
-                    <button onclick="copyToClipboard()" class="text-xs bg-[#f79039] hover:bg-[#e68a35] text-white font-bold px-3 py-1 rounded transition-colors">
-                        <i class="fas fa-copy mr-1"></i> Copy
-                    </button>
-                </div>
-                <div class="p-4 overflow-y-auto custom-scrollbar flex-grow">
-                    <pre id="jsonOutput" class="text-xs font-mono whitespace-pre-wrap leading-relaxed text-gray-300"></pre>
-                </div>
-            </div>
- 
-        </div>
-    </main>
- 
-    <!-- Tutorial Section -->
-    <section id="tutorial" class="bg-white border-t border-gray-200 py-10 px-4">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-bold text-center mb-8 text-[#231f20]"><i class="fas fa-graduation-cap text-[#febd26] mr-2"></i>Panduan Penggunaan</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-4">
-                    <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Langkah-langkah</h3>
-                    <ol class="list-decimal list-outside ml-4 space-y-3 text-sm text-gray-700">
-                        <li>Pilih <strong>Format Gambar</strong>, <strong>Identitas</strong>, <strong>Ekspresi</strong>, dan <strong>Aksesoris</strong> di aplikasi ini.</li>
-                        <li>Pilih <strong>Kategori KBLI 2025</strong>. Pilih "Tanpa Konteks" jika ingin hasil yang bersih.</li>
-                        <li>Untuk aksesoris, gunakan fitur <strong>Custom</strong> jika ingin menambahkan item daerah/lokal (contoh: Udeng, Batik, dll).</li>
-                        <li>Klik <strong>Buat Prompt (JSON)</strong> dan klik <strong>Copy</strong>.</li>
-                        <li>Buka <strong><a href="https://gemini.google.com" target="_blank" class="text-blue-600 hover:underline">gemini.google.com</a></strong> (pastikan sudah login dengan akun Google), bisa menggunakan AI generator lain.</li>
-                        <li>Di Jendela Percakapan Baru, Klik <strong>🍌 Buat Gambar</strong>.
-                            <ul class="list-disc ml-5 mt-1 text-xs text-gray-500">
-                                <li>Untuk menggunakan Nano Banana (versi gratis), pilih "Cepat" dari menu model.</li>
-                                <li>Untuk menggunakan Nano Banana Pro, pilih "Penalaran" atau "Pro" dari menu model.</li>
-                            </ul>
-                        </li>
-                        <li><strong>PENTING:</strong> Upload gambar referensi (bungitung.png, dll) dan juga gambar barang adat kustom Anda jika ada.</li>
-                        <li>Paste JSON prompt yang sudah dicopy.</li>
-                        <li>Tekan Enter/Kirim/Submit.</li>
-                    </ol>
-                    <div class="mt-4 p-4 bg-[#fffbee] rounded-lg border border-yellow-200">
-                        <p class="text-sm font-bold text-[#231f20]"><i class="fab fa-youtube text-red-600 mr-2"></i>Video Tutorial Lengkap:</p>
-                        <a href="http://s.bps.go.id/tutorialpromptbungitung" target="_blank" class="text-blue-600 underline text-sm break-all">http://s.bps.go.id/tutorialpromptbungitung</a>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Tips Agar Hasil Akurat</h3>
-                    <ul class="list-disc list-outside ml-4 space-y-2 text-sm text-gray-700">
-                        <li><strong>Smart Hijab:</strong> Jika memilih Hijab, pakaian otomatis menyesuaikan menjadi lengan panjang dan tertutup (syar'i).</li>
-                        <li><strong>Fitur Custom Pegang:</strong> Barang yang dimasukkan di "Custom Aksesoris Badan" akan otomatis diposisikan sedang dipegang oleh karakter.</li>
-                        <li><strong>Konsistensi Wajah:</strong> Selalu upload gambar "Bung Itung Original" sebagai referensi utama.</li>
-                        <li><strong>Masalah Kulit:</strong> Jika memilih warna kulit gelap, turunkan settingan Image Weight ke "Low" atau "Medium" pada AI Generator agar instruksi warna kulit lebih didengar.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
- 
-    <!-- Hidden Asset Modal -->
-    <div id="assetModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="toggleAssetModal()"></div>
- 
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
- 
-            <!-- Modal panel -->
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-folder-open text-[#f79039]"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Aset Referensi (Wajib)</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500 mb-4">Download gambar ini untuk diupload ke AI Generator sebagai referensi:</p>
-                                
-                                <div class="bg-[#fffbee] border border-yellow-200 p-4 rounded-xl text-sm shadow-sm text-left">
-                                    <div class="space-y-3">
-                                        <div class="border-b border-yellow-100 pb-2">
-                                            <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Karakter & Atribut</p>
-                                            <ul class="space-y-1.5 text-xs">
-                                                <li><a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-user-tie w-5 text-gray-400"></i> Bung Itung (Karakter Utama)</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-mobile w-5 text-gray-400"></i> HP Logo SE2026</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-hat-cowboy w-5 text-gray-400"></i> Topi SE2026</a></li>
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Logo Resmi</p>
-                                            <ul class="space-y-1.5 text-xs">
-                                                <li><a href="https://drive.google.com/file/d/1w3mQmBImsMMM3QsYEvrn5zD1Me1UNkyu/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Vertikal</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1UC5VU4tCz4D35wiOWTZBYLFnc5ReYWGP/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Horizontal</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1CfmgL2gnwJ-rjw5BUo0YEU01nur-WT4v/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Tanpa Teks</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleAssetModal()">
-                        Tutup
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
- 
-    <footer class="bg-[#231f20] text-white text-center py-8">
-        <p class="font-bold text-sm">Tim Pelaksana SE 2026 - Tim Kerja Kehumasan</p>
-        <p class="text-xs mt-1 text-[#febd26]">BPS Provinsi Papua ©2026 @faldodaffa</p>
-    </footer>
- 
-    <script>
-        // --- DATA LOGIC ---
-        
-        const kbliData = {
-            "NONE": { label: "Tanpa Konteks Sektor", headgear_context: "None", attire_context: "Standard Bung Itung Vest", held_items: "", ground_items: "", bg: "Clean studio background, neutral color" },
-            "A": { label: "Pertanian, Kehutanan, Perikanan", headgear_context: "Traditional bamboo farmer hat (caping)", attire_context: "Farmer outfit with rolled-up sleeves", held_items: "holding a rice sickle", ground_items: "basket of vegetables, rice plants", bg: "rice field landscape, lush green forest, fishing boat at sea, plantation area" },
-            "B": { label: "Pertambangan", headgear_context: "Yellow safety construction helmet", attire_context: "Mining worker outfit with high-vis vest", held_items: "holding a geological hammer", ground_items: "piles of rocks, pickaxe, blueprints", bg: "open pit mine, quarry site with excavators in distance, oil rig in background" },
-            "C": { label: "Industri Pengolahan", headgear_context: "Factory safety cap", attire_context: "Factory worker jumpsuit or apron", held_items: "holding a wrench", ground_items: "manufactured products, tool box", bg: "factory interior with blurred machinery, assembly line background, industrial warehouse" },
-            "D": { label: "Listrik, Gas, Uap", headgear_context: "Safety helmet with ear protection", attire_context: "Technician uniform with safety gloves", held_items: "holding an electrical meter or tablet displaying energy charts", ground_items: "insulated tools, cables", bg: "power plant facility, solar panel field, electrical substation towers in distance" },
-            "E": { label: "Air & Limbah", headgear_context: "Safety cap", attire_context: "Sanitation worker uniform (blue accents)", held_items: "holding water pipe tools or water quality tester", ground_items: "recycling bin, pipes", bg: "water treatment plant, recycling facility, clean water reservoir" },
-            "F": { label: "Konstruksi", headgear_context: "Yellow safety helmet", attire_context: "Construction worker outfit with utility belt", held_items: "holding rolled architectural blueprints", ground_items: "measuring tape, bricklayer trowel, level", bg: "building construction site with cranes, unfinished building structure, road construction" },
-            "G": { label: "Perdagangan", headgear_context: "None", attire_context: "Shop assistant apron", held_items: "holding a point-of-sale scanner or calculator", ground_items: "shopping bags, product boxes", bg: "supermarket shelves, traditional market stalls, retail shop interior" },
-            "H": { label: "Pengangkutan", headgear_context: "Delivery cap", attire_context: "Courier uniform", held_items: "holding a cardboard package or delivery scanner", ground_items: "hand truck, stack of boxes", bg: "logistics warehouse with boxes, shipping container yard, delivery truck in background" },
-            "I": { label: "Akomodasi & Makan", headgear_context: "Chef hat", attire_context: "Chef apron or waiter uniform", held_items: "holding a serving tray with food or coffee cup", ground_items: "menu board, kitchen utensils", bg: "restaurant interior, hotel lobby, cafe setting, kitchen background" },
-            "J": { label: "Info & Komunikasi", headgear_context: "Headphones (around neck)", attire_context: "Smart casual tech hoodie", held_items: "holding a laptop with stickers", ground_items: "server cables, smartphone with code on screen", bg: "modern tech office, server room with blinking lights, broadcasting studio" },
-            "K": { label: "Keuangan", headgear_context: "None", attire_context: "Formal business suit", held_items: "holding a tablet with financial graphs", ground_items: "briefcase, calculator, coins", bg: "bank lobby, office with financial charts on glass walls, stock market screen" },
-            "L": { label: "Real Estat", headgear_context: "None", attire_context: "Real estate agent blazer", held_items: "holding a house model key or property brochures", ground_items: "building model, contract papers", bg: "residential housing complex, apartment building exterior, modern office building" },
-            "M": { label: "Profesional", headgear_context: "None", attire_context: "Lab coat or architect shirt", held_items: "holding scientific glassware/beaker or architect ruler", ground_items: "microscope, legal documents, magnifying glass", bg: "science laboratory, architect studio with drafting table, law library" },
-            "N": { label: "Penyewaan", headgear_context: "None", attire_context: "Service uniform", held_items: "holding rental contract keys", ground_items: "travel brochures, gardening tools (services)", bg: "car rental lot, travel agency office, employment agency reception" },
-            "O": { label: "Pemerintahan", headgear_context: "Peci", attire_context: "Civil servant uniform (KORPRI/Khaki)", held_items: "holding official documents", ground_items: "file folders, flag", bg: "government office building, city hall, flag pole area" },
-            "P": { label: "Pendidikan", headgear_context: "None", attire_context: "Teacher attire (Batik)", held_items: "holding a textbook or pointer stick", ground_items: "whiteboard marker, graduation cap, books", bg: "classroom with desks, library shelves, university campus" },
-            "Q": { label: "Kesehatan", headgear_context: "Surgical cap (optional)", attire_context: "Doctor coat or scrubs", held_items: "holding a clipboard or stethoscope", ground_items: "medical kit, thermometer", bg: "hospital corridor, doctor's examination room, pharmacy shelves" },
-            "R": { label: "Kesenian", headgear_context: "Beret", attire_context: "Creative artsy outfit", held_items: "holding a paintbrush or musical instrument", ground_items: "camera, palette, art supplies", bg: "art gallery, theater stage, museum exhibition, stadium stands" },
-            "S": { label: "Jasa Lainnya", headgear_context: "None", attire_context: "Service apron or uniform", held_items: "holding salon scissors/comb or repair tools", ground_items: "laundry basket, grooming kit", bg: "barbershop/salon interior, repair shop, laundry room, community center" },
-            "T": { label: "Rumah Tangga", headgear_context: "None", attire_context: "Casual home outfit with apron", held_items: "holding cleaning tools or cooking utensils", ground_items: "gardening equipment, iron", bg: "home kitchen, living room, home garden" },
-            "U": { label: "Badan Internasional", headgear_context: "None", attire_context: "Diplomatic suit", held_items: "holding international ID badge or briefcase", ground_items: "globe, documents", bg: "conference hall with international flags, diplomatic office" },
-            "STAKEHOLDER": { label: "Stakeholder / Pejabat", headgear_context: "None", attire_context: "Formal Batik shirt", held_items: "holding a plaque or certificate", ground_items: "microphone stand", bg: "formal meeting room, podium with microphone, office backdrop" }
-        };
- 
-        // --- UI FUNCTIONS ---
- 
-        function selectFormat(fmt) {
-            document.getElementById('formatValue').value = fmt;
-            document.getElementById('fmt-single').classList.remove('selected');
-            document.getElementById('fmt-multipose').classList.remove('selected');
-            document.getElementById('fmt-' + fmt).classList.add('selected');
-            
-            const poseSection = document.getElementById('poseSection');
-            if (fmt === 'multipose') {
-                poseSection.classList.add('opacity-50', 'pointer-events-none');
-            } else {
-                poseSection.classList.remove('opacity-50', 'pointer-events-none');
-            }
-        }
- 
-        function selectGender(gender) {
-            document.getElementById('genderValue').value = gender;
-            const buttons = document.querySelectorAll('.gender-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('selected', 'bg-[#febd26]', 'border-[#f79039]', 'text-[#231f20]', 'font-bold');
-                btn.classList.add('bg-white', 'text-gray-600');
-            });
-            const selectedBtn = document.getElementById('btn-' + gender);
-            selectedBtn.classList.add('selected', 'bg-[#febd26]', 'border-[#f79039]', 'text-[#231f20]', 'font-bold');
-            selectedBtn.classList.remove('bg-white', 'text-gray-600');
-        }
- 
-        function selectPose(pose) {
-            document.getElementById('poseValue').value = pose;
-            document.querySelectorAll('#poseSection .option-card').forEach(el => {
-                el.classList.remove('selected');
-            });
-            document.getElementById('pose-' + pose).classList.add('selected');
-        }
- 
-        function selectExpression(expr) {
-            document.getElementById('expressionValue').value = expr;
-            document.querySelectorAll('#expressionSection .option-card').forEach(el => el.classList.remove('selected'));
-            document.getElementById('expr-' + expr).classList.add('selected');
-        }
- 
-        function toggleCustomInput(type, show) {
-            if (type === 'headgear') {
-                const el = document.getElementById('customHeadgearText');
-                if (show) el.classList.remove('hidden'); else el.classList.add('hidden');
-            } else if (type === 'accessory') {
-                const el = document.getElementById('customAccessoryText');
-                if (show) el.classList.remove('hidden'); else el.classList.add('hidden');
-            } else if (type === 'attire') {
-                const el = document.getElementById('customAttireText');
-                if (show) el.classList.remove('hidden'); else el.classList.add('hidden');
-            }
-        }
- 
-        // Modal Function
-        function toggleAssetModal() {
-            const modal = document.getElementById('assetModal');
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
- 
-        // GENERATE FUNCTION
-        function generatePrompt() {
-            try {
-                // 1. Gather Inputs
-                const format = document.getElementById('formatValue').value;
-                const gender = document.getElementById('genderValue').value;
-                const skinTone = document.getElementById('skinToneSelect').value;
-                const expression = document.getElementById('expressionValue').value;
-                const headgearSelection = document.querySelector('input[name="headgear"]:checked').value;
-                const sectorCode = document.getElementById('sectorSelect').value;
-                const attireMode = document.querySelector('input[name="attire"]:checked').value;
-                const bgMode = document.querySelector('input[name="bg_mode"]:checked').value;
-                let pose = document.getElementById('poseValue').value;
- 
-                // Collect Body/Hand Checkboxes & Custom
-                let accessoriesList = [];
-                let customAccessoryText = "";
-                
-                // Custom Accessory Logic (Now part of handheld items)
-                let handhelds = [];
-                const kbliInfo = kbliData[sectorCode];
-                if (!kbliInfo) { alert("Error: Kode sektor tidak ditemukan."); return; }
-                if (sectorCode !== 'NONE' && kbliInfo.held_items) handhelds.push(kbliInfo.held_items);
- 
-                if(document.getElementById('acc_custom').checked) {
-                    customAccessoryText = document.getElementById('customAccessoryText').value || "Custom Accessory";
-                    handhelds.push(`holding ${customAccessoryText}`); // Add to handhelds with "holding" prefix
-                }
- 
-                if(document.getElementById('acc_noken').checked) {
-                    // DETAILED NOKEN PROMPT INJECTION (UPDATED v5.2)
-                    let nokenDetail = "Wearing a rustic, handmade Noken-style shoulder bag made from pliable, non-rigid natural beige bark fibers. The bag is unstructured and hangs limply slung over shoulder, its soft form entirely shaped by a small brown kraft paper notebook and a sleek black smartphone visible through the open-loop mesh.";
-                    accessoriesList.push(nokenDetail);
-                }
- 
-                if(document.getElementById('acc_hpse').checked) accessoriesList.push("Smartphone displaying 'Sensus Ekonomi 2026' logo");
-                if(document.getElementById('acc_glasses').checked) accessoriesList.push("Eyeglasses");
-                
-                // 2. Build Descriptions
-                let charName = (gender === 'male') ? "Bung Itung" : "Mbak Sasa";
-                let baseFacialFeatures = "distinctive large round bulbous nose, cartoonish head-to-body ratio"; 
-                
-                // Expression Logic
-                const expressionMap = {
-                    'happy': "Wide friendly smile, eyebrows raised slightly, eyes squinted in curve (happy)",
-                    'sad': "Mouth curved downwards, eyebrows tilted inwards and upwards, teary or closed eyes (sad/disappointed)",
-                    'angry': "Furrowed brow, eyes glaring intently, jaw set stiffly, mouth either shouting or pressed tightly together (angry/fierce)",
-                    'fear': "Eyes wide open with small pupils, eyebrows raised high, mouth gaping open (fearful/shocked)",
-                    'shy': "Blush marks on cheeks, avoiding eye contact, shy smile (shy/bashful)"
-                };
-                let expressionDesc = expressionMap[expression] || expressionMap['happy'];
-                let facialFeatures = `${baseFacialFeatures}. Expression: ${expressionDesc}`;
- 
-                // Skin Tone Logic
-                let skinInstruction = "";
-                let ethnicityDesc = "";
-                let recommendedImageWeight = "HIGH (1.0 - 1.2)";
- 
-                if (skinTone === 'dark') {
-                    ethnicityDesc = "Dark black skin tone covering FACE, NECK, ARMS, and HANDS.";
-                    skinInstruction = "ENSURE UNIFORM DARK SKIN TONE ON FACE AND BODY. DO NOT MAKE HANDS WHITE.";
-                    recommendedImageWeight = "LOW to MEDIUM (0.6 - 0.8) - Critical to allow skin color change";
-                } else if (skinTone === 'tan') {
-                     ethnicityDesc = "Tan (Sawo Matang) Indonesian skin tone.";
-                } else {
-                     ethnicityDesc = "Fair/Light (Kuning Langsat) skin tone.";
-                }
- 
-                // Headgear Description Logic
-                let headgearDesc = "None";
-                let customHeadgearText = "";
-                
-                if (headgearSelection === 'custom_headgear') {
-                    customHeadgearText = document.getElementById('customHeadgearText').value || "Custom Traditional Hat";
-                    headgearDesc = `Wearing ${customHeadgearText}`;
-                } else if (headgearSelection === 'topi_se2026') {
-                    headgearDesc = "Wearing Black cap with orange visor and 'Sensus Ekonomi 2026' logo";
-                } else if (headgearSelection === 'mahkota_papua') {
-                    // PRESET MAHKOTA PAPUA (DETAILED)
-                    headgearDesc = "Wearing detailed traditional Papuan headdress. Upper section: Stiff, coarse dark brown fibers radiating upwards (cassowary feathers). Lower section: Woven headband decorated with off-white cowrie shells in floral patterns, bright red beads, and vibrant yellow piping.";
-                } else if (headgearSelection === 'contextual') {
-                    if (kbliInfo.headgear_context !== "None") headgearDesc = "Wearing " + kbliInfo.headgear_context;
-                } else if (headgearSelection === 'helm_proyek') {
-                     headgearDesc = "Wearing Yellow safety construction helmet";
-                } else if (headgearSelection === 'caping') {
-                     headgearDesc = "Wearing Traditional bamboo farmer hat (caping)";
-                }
- 
-                // Hair & Hijab Logic
-                let additionalNegativePrompts = "";
-                let headgearActive = (headgearDesc !== "None");
- 
-                if (gender === 'female_hijab') {
-                    additionalNegativePrompts += ", visible hair, hair roots, hair texture";
-                    genderDesc = `Female version of Bung Itung (Hijab). Wearing yellow hijab tucked in. **Note: ${headgearActive ? headgearDesc + ' is worn ON TOP of the hijab.' : ''} ABSOLUTELY NO HAIR VISIBLE.** Facial features: ${facialFeatures}.`;
-                     if (skinTone === 'dark') ethnicityDesc = "Dark black skin tone covering FACE and HANDS (Body covered).";
-                } else {
-                    let hairDescription = "short neat black hair."; 
-                    if (gender !== 'male') hairDescription = "Hair: Ponytail."; 
- 
-                    if (skinTone === 'dark') {
-                         hairDescription = (gender === 'male') ? "short curly black hair." : "Hair: Curly Ponytail.";
-                    }
- 
-                    if (headgearActive) {
-                         hairDescription = `Neat hair tucked under the ${headgearDesc}.`;
-                         if (skinTone === 'dark') hairDescription = `Curly hair mostly tucked under the ${headgearDesc}.`;
-                    }
-                    genderDesc = `Male/Female. Facial features: ${facialFeatures}. ${hairDescription}`;
-                }
- 
-                // Attire Description & Modesty Logic
-                let attireDesc = "";
-                let customAttireText = "";
- 
-                if (attireMode === 'custom_attire') {
-                    customAttireText = document.getElementById('customAttireText').value || "Custom Traditional Attire";
-                    attireDesc = `Wearing ${customAttireText}.`;
-                } else if (attireMode === 'original' || sectorCode === 'NONE') {
-                    attireDesc = "Wearing Official census uniform: Black vest with yellow accents, yellow collared shirt underneath, ID Card lanyard.";
-                } else {
-                    attireDesc = `Wearing ${kbliInfo.attire_context}.`;
-                }
- 
-                // Inject Modesty Logic for Hijab
-                if (gender === 'female_hijab') {
-                    attireDesc += " (Modest, long-sleeved top and full-length bottom ensuring full coverage)";
-                }
- 
-                // Pose Description
-                let poseDesc = "Standing naturally";
-                if (pose === 'random') {
-                    const randomPoses = [
-                        "Presenting gesture with open arms, welcoming",
-                        "Standing confidently at camera",
-                        "Walking forward with purpose",
-                        "Standing with hands on hips",
-                        "Giving a thumbs up with one hand"
-                    ];
-                    poseDesc = randomPoses[Math.floor(Math.random() * randomPoses.length)];
-                } else if (format === 'single') {
-                    const poseMap = {
-                         'thumbs_up': "Giving a thumbs up",
-                         'pointing': "Pointing finger to the side (empty space for text)",
-                         'waving': "Waving hand in a friendly greeting gesture",
-                         'open_palms': "Presenting gesture with open palms facing slightly upwards",
-                         'hand_on_chest': "One hand placed respectfully on the chest over the heart, service gesture",
-                         'thank_you': "Hands clasped together in a gesture of gratitude or slight bow saying thank you",
-                         'ready': "Standing tall with hands on hips or crossed, ready for action (sigap)"
-                     };
-                     poseDesc = poseMap[pose] || "Standing";
-                } else {
-                    // Updated Multipose Logic
-                    poseDesc = `Character Reference Sheet. 4 distinct, dynamic full-body action poses arranged in a 2x2 grid. All poses show the character with a ${expression} expression. No static side views. Consistent character design across all views. White background.`;
-                }
- 
-                // Env & Props
-                let envDesc = "";
-                let itemsGround = (sectorCode === 'NONE' || format === 'multipose') ? "No ground props, clean floor." : `Props on ground/nearby: ${kbliInfo.ground_items}.`;
-                envDesc = (sectorCode === 'NONE' || format === 'multipose' || bgMode === 'prop_focus') ? 
-                    "Clean, plain white/light studio background." : 
-                    `${kbliInfo.bg}. Background is blurred (depth of field).`;
- 
-                // Handheld Smartphone Logic
-                if (accessoriesList.some(acc => acc.includes("Smartphone"))) {
-                     handhelds.push("holding Smartphone displaying 'Sensus Ekonomi 2026' logo");
-                }
-                
-                let itemsHeld = handhelds.join(", ");
-                // Filter out smartphone from wearables as it's handheld
-                let wearablesStr = accessoriesList.filter(a => !a.includes("Smartphone")).join(", ");
-                let papuaForce = (skinTone === 'dark') ? "DARK BROWN SKIN. " : "";
- 
-                const fullPrompt = `(Image Reference Style). 3D Render. Pixar Disney Style. CHARACTER: ${charName} (${genderDesc}). **CRITICAL: KEEP FACIAL SHAPE IDENTICAL TO REFERENCE.** ${ethnicityDesc} ${skinInstruction} ${papuaForce} \n\nWEARABLES: ${headgearDesc}. ${attireDesc} ${wearablesStr}. \n\nACTION: ${poseDesc}. ${itemsHeld}. \n\nENV: ${envDesc} ${itemsGround}.`;
- 
-                // JSON Object
-                const promptData = {
-                    "meta": {
-                        "project": "SE2026 Nusantara",
-                        "version": "5.3 (Final UX)"
-                    },
-                    "generation_settings": {
-                        "aspect_ratio": format === 'single' ? "2:3 (Portrait)" : "1:1 (Square)",
-                        "image_weight": recommendedImageWeight
-                    },
-                    "image_references": {
-                        "main_character": "Upload 'Bung Itung Original'",
-                        "custom_uploads": []
-                    },
-                    "final_positive_prompt": fullPrompt,
-                    "negative_prompt": "photorealistic, real human, ugly, distorted, bad anatomy, " + additionalNegativePrompts
-                };
- 
-                // Dynamic Upload Instructions
-                if (headgearSelection === 'topi_se2026') promptData.image_references.custom_uploads.push("Upload 'Topi SE2026'");
-                if (headgearSelection === 'custom_headgear') promptData.image_references.custom_uploads.push(`Upload Reference Image for: '${customHeadgearText}'`);
-                if (attireMode === 'custom_attire') promptData.image_references.custom_uploads.push(`Upload Reference Image for: '${customAttireText}'`);
-                if (document.getElementById('acc_custom').checked) promptData.image_references.custom_uploads.push(`Upload Reference Image for: '${customAccessoryText}'`);
-                if (document.getElementById('acc_hpse').checked) promptData.image_references.custom_uploads.push("Upload 'HP SE2026'");
- 
-                document.getElementById('jsonOutput').innerHTML = syntaxHighlight(JSON.stringify(promptData, null, 2));
- 
-            } catch (e) {
-                alert("Error: " + e.message);
-            }
-        }
- 
-        // Helper: JSON Syntax Highlighting
-        function syntaxHighlight(json) {
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'json-number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) { cls = 'json-key'; } else { cls = 'json-string'; }
-                } else if (/true|false/.test(match)) { cls = 'json-boolean'; } else if (/null/.test(match)) { cls = 'json-boolean'; }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
- 
-        function copyToClipboard() {
-            const text = document.getElementById('jsonOutput').textContent;
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-9999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try { document.execCommand('copy'); alert("Prompt JSON berhasil dicopy!"); } catch (err) { alert("Gagal copy manual."); }
-            document.body.removeChild(textArea);
-        }
- 
-        function updateBgDesc() {}
-        
-        document.addEventListener('DOMContentLoaded', () => {
-             // Optional: generatePrompt(); 
-        });
-    </script>
+
+    <!-- Header -->
+    <header class="bg-[#231f20] text-white shadow-lg border-b-4 border-[#f79039] sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="bg-[#febd26] text-[#231f20] p-2 rounded-lg font-bold text-xl h-12 w-12 flex items-center justify-center shadow-md">
+                    SE
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-2xl font-bold tracking-tight">PACE SE2026 v5.3</h1>
+                    <p class="text-[#febd26] text-xs md:text-sm font-medium">Prompt Assistant & Creative Engine</p>
+                </div>
+            </div>
+            <!-- Header Buttons -->
+            <div class="hidden md:flex items-center gap-3 text-right text-xs">
+                <button onclick="toggleAssetModal()" class="inline-flex items-center bg-transparent border border-[#febd26] text-[#febd26] hover:bg-[#febd26] hover:text-[#231f20] font-bold py-2 px-4 rounded transition-colors shadow-sm">
+                    <i class="fas fa-folder-open mr-2"></i>Aset Referensi
+                </button>
+                <a href="#tutorial" class="inline-flex items-center bg-[#f79039] hover:bg-[#e68a35] text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
+                    <i class="fas fa-book-open mr-2"></i>Petunjuk
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
+        
+        <!-- LEFT COLUMN: Character & Style (4 cols) -->
+        <div class="lg:col-span-4 space-y-5">
+            
+            <!-- 1. Format Gambar -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3">
+                    <i class="fas fa-image mr-2 text-[#f79039]"></i>1. Format Gambar
+                </label>
+                <div class="grid grid-cols-2 gap-3">
+                    <div onclick="selectFormat('single')" id="fmt-single" class="option-card selected p-3 rounded-lg text-center">
+                        <i class="fas fa-user text-2xl text-[#f79039] mb-2"></i>
+                        <div class="text-xs font-bold">Single Image</div>
+                        <div class="text-[10px] text-gray-500">Pose Spesifik</div>
+                    </div>
+                    <div onclick="selectFormat('multipose')" id="fmt-multipose" class="option-card p-3 rounded-lg text-center">
+                        <i class="fas fa-users-viewfinder text-2xl text-[#febd26] mb-2"></i>
+                        <div class="text-xs font-bold">Multipose (2x2)</div>
+                        <div class="text-[10px] text-gray-500">Dinamis (No Side View)</div>
+                    </div>
+                </div>
+                <input type="hidden" id="formatValue" value="single">
+            </div>
+
+            <!-- 2. Gender & Skin Tone -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3">
+                    <i class="fas fa-user-circle mr-2 text-[#f79039]"></i>2. Identitas Karakter
+                </label>
+                
+                <div class="mb-4">
+                    <span class="text-xs font-semibold text-gray-500 block mb-2">Gender:</span>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="selectGender('male')" id="btn-male" class="gender-btn selected flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Pria</button>
+                        <button type="button" onclick="selectGender('female_nonhijab')" id="btn-female_nonhijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Wanita</button>
+                        <button type="button" onclick="selectGender('female_hijab')" id="btn-female_hijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Hijab</button>
+                    </div>
+                    <input type="hidden" id="genderValue" value="male">
+                </div>
+
+                <div>
+                    <span class="text-xs font-semibold text-gray-500 block mb-2">Warna Kulit (Skin Tone):</span>
+                    <select id="skinToneSelect" class="select-custom w-full bg-[#fffbee] border border-gray-300 text-[#231f20] text-sm rounded-lg block p-2.5 focus:border-[#f79039] focus:ring-[#f79039]">
+                        <option value="original">Kuning Langsat (Fair/Light)</option>
+                        <option value="tan">Sawo Matang (Tan/Medium)</option>
+                        <option value="dark">Gelap Eksotis (Dark/Black)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 3. Accessories (Wearables) -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3">
+                    <i class="fas fa-hat-cowboy mr-2 text-[#f79039]"></i>3. Aksesoris Kepala (Wearables)
+                </label>
+
+                <!-- Headgear (Radio - Mutually Exclusive) -->
+                <div class="mb-4 space-y-2">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="radio" name="headgear" value="none" class="text-[#f79039] focus:ring-[#f79039]" checked onclick="toggleCustomInput('headgear', false)">
+                        <span class="text-sm">Tanpa Topi Khusus</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="radio" name="headgear" value="topi_se2026" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
+                        <span class="text-sm font-semibold text-[#231f20]">Topi SE2026 (Hitam)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="radio" name="headgear" value="mahkota_papua" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
+                        <span class="text-sm font-semibold text-[#231f20]">Mahkota Adat Papua (Kasuari)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="radio" name="headgear" value="contextual" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
+                        <span class="text-sm font-semibold text-blue-600">Sesuai Sektor (Helm/Caping)</span>
+                    </label>
+                    
+                    <!-- Custom Headgear Input -->
+                    <div class="border-t border-dashed border-gray-300 pt-2 mt-1">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                            <input type="radio" name="headgear" value="custom_headgear" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', true)">
+                            <span class="text-sm font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Topi Adat/Lokal</span>
+                        </label>
+                        <input type="text" id="customHeadgearText" placeholder="Contoh: Udeng Bali / Blangkon Jawa / Ti'i Langga" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
+                    </div>
+                </div>
+
+                <label class="block text-sm font-bold text-[#231f20] mb-3 mt-4">
+                    <i class="fas fa-briefcase mr-2 text-[#f79039]"></i>Aksesoris Badan/Tangan
+                </label>
+                <!-- Body/Hand (Checkbox - Multiple Allowed) -->
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="checkbox" id="acc_noken" class="text-[#f79039] rounded focus:ring-[#f79039]">
+                        <span class="text-sm">Tas Noken Papua</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="checkbox" id="acc_hpse" class="text-[#f79039] rounded focus:ring-[#f79039]">
+                        <span class="text-sm font-bold text-[#231f20]">HP Logo SE2026</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                        <input type="checkbox" id="acc_glasses" class="text-[#f79039] rounded focus:ring-[#f79039]">
+                        <span class="text-sm">Kacamata</span>
+                    </label>
+
+                    <!-- Custom Accessory Input -->
+                    <div class="border-t border-dashed border-gray-300 pt-2 mt-1">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                            <input type="checkbox" id="acc_custom" class="text-[#f79039] rounded focus:ring-[#f79039]" onchange="toggleCustomInput('accessory', this.checked)">
+                            <span class="text-sm font-bold text-[#f79039]"><i class="fas fa-hand-holding mr-1"></i> Custom Pegang (Buku/Tablet/dll)</span>
+                        </label>
+                        <input type="text" id="customAccessoryText" placeholder="Contoh: Buku, Pensil, Tablet, Kain Ulos, Sarung Batik" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MIDDLE COLUMN: Context & Background (5 cols) -->
+        <div class="lg:col-span-5 space-y-5">
+
+             <!-- NEW: Expression Selection -->
+             <div id="expressionSection" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <label class="block text-sm font-bold text-[#231f20] mb-3">
+                    <i class="fas fa-face-smile mr-2 text-[#f79039]"></i>Ekspresi Wajah / Emosi
+                </label>
+                
+                <div class="expression-grid">
+                    <div onclick="selectExpression('happy')" id="expr-happy" class="option-card selected p-2 rounded text-center flex flex-col items-center justify-center h-16 bg-yellow-50 border-yellow-200">
+                        <i class="fas fa-face-laugh-beam text-xl text-[#f79039] mb-1"></i>
+                        <span class="text-[10px] leading-tight font-bold">Ceria</span>
+                    </div>
+                    <div onclick="selectExpression('sad')" id="expr-sad" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
+                        <i class="fas fa-face-sad-tear text-xl text-blue-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Sedih</span>
+                    </div>
+                    <div onclick="selectExpression('angry')" id="expr-angry" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
+                        <i class="fas fa-face-angry text-xl text-red-600 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Marah</span>
+                    </div>
+                    <div onclick="selectExpression('fear')" id="expr-fear" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
+                        <i class="fas fa-face-flushed text-xl text-purple-600 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Takut</span>
+                    </div>
+                    <div onclick="selectExpression('shy')" id="expr-shy" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
+                        <i class="fas fa-face-kiss-wink-heart text-xl text-pink-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Malu</span>
+                    </div>
+                </div>
+                <input type="hidden" id="expressionValue" value="happy">
+            </div>
+            
+            <!-- 4. Context (KBLI 2025) -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#febd26]">
+                <label class="block text-lg font-bold text-[#231f20] mb-1">
+                    <i class="fas fa-building mr-2 text-[#f79039]"></i>4. Konteks Sektor (KBLI 2025)
+                </label>
+                <p class="text-xs text-gray-500 mb-4">Pilih kategori untuk menyesuaikan visual pakaian & alat.</p>
+                
+                <select id="sectorSelect" class="select-custom w-full bg-[#fffbee] border border-yellow-300 text-[#231f20] text-sm rounded-lg focus:ring-[#f79039] focus:border-[#f79039] block p-3 mb-4 font-medium">
+                    <option value="NONE" class="font-bold">-- Tanpa Konteks Sektor (Polos) --</option>
+                    <option value="A">A. Pertanian, Kehutanan, dan Perikanan</option>
+                    <option value="B">B. Pertambangan dan Penggalian</option>
+                    <option value="C">C. Industri Pengolahan (Pabrik/Manufaktur)</option>
+                    <option value="D">D. Pengadaan Listrik, Gas, Uap/Air Panas</option>
+                    <option value="E">E. Pengadaan Air & Pengelolaan Limbah</option>
+                    <option value="F">F. Konstruksi (Bangunan)</option>
+                    <option value="G">G. Perdagangan Besar & Eceran</option>
+                    <option value="H">H. Pengangkutan & Pergudangan</option>
+                    <option value="I">I. Penyediaan Akomodasi & Makan Minum</option>
+                    <option value="J">J. Informasi & Komunikasi</option>
+                    <option value="K">K. Aktivitas Keuangan & Asuransi</option>
+                    <option value="L">L. Real Estat</option>
+                    <option value="M">M. Aktivitas Profesional, Ilmiah & Teknis</option>
+                    <option value="N">N. Aktivitas Penyewaan & Sewa Guna Usaha</option>
+                    <option value="O">O. Administrasi Pemerintahan & Pertahanan</option>
+                    <option value="P">P. Pendidikan</option>
+                    <option value="Q">Q. Aktivitas Kesehatan Manusia & Sosial</option>
+                    <option value="R">R. Kesenian, Hiburan & Rekreasi</option>
+                    <option value="S">S. Aktivitas Jasa Lainnya</option>
+                    <option value="T">T. Aktivitas Rumah Tangga</option>
+                    <option value="U">U. Aktivitas Badan Internasional</option>
+                    <option value="STAKEHOLDER">-- KHUSUS: Stakeholder / Pejabat --</option>
+                </select>
+
+                <!-- Baju Option -->
+                <div class="bg-[#fffbee] p-3 rounded-lg border border-yellow-100">
+                    <span class="text-xs font-bold text-gray-600 block mb-2">Pilihan Pakaian Utama:</span>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="attire" value="original" class="text-[#f79039] focus:ring-[#f79039]" checked onclick="toggleCustomInput('attire', false)">
+                            <span class="ml-2 text-sm text-gray-700">Seragam Asli (Rompi Sensus)</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="attire" value="contextual" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('attire', false)">
+                            <span class="ml-2 text-sm text-gray-700">Sesuai Profesi KBLI (Dokter/Insinyur/dll)</span>
+                        </label>
+                        
+                        <!-- Custom Attire -->
+                        <div class="border-t border-gray-200 mt-1 pt-1">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="attire" value="custom_attire" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('attire', true)">
+                                <span class="ml-2 text-sm font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Pakaian</span>
+                            </label>
+                            <input type="text" id="customAttireText" placeholder="Contoh: Baju Batik Jawa / Baju Adat Bali" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Background Setting -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <label class="block text-sm font-bold text-[#231f20] mb-3">
+                    <i class="fas fa-image mr-2 text-[#f79039]"></i>5. Pengaturan Latar Belakang
+                </label>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="cursor-pointer">
+                        <input type="radio" name="bg_mode" value="prop_focus" class="peer sr-only" checked onchange="updateBgDesc()">
+                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-[#fffbee] peer-checked:border-[#f79039] peer-checked:bg-[#fffbee] transition-all">
+                            <div class="text-center">
+                                <i class="fas fa-box-open text-2xl text-gray-600 mb-2"></i>
+                                <h3 class="font-bold text-sm">Fokus Barang/Alat</h3>
+                                <p class="text-[10px] text-gray-500 mt-1">Latar bersih, dikelilingi alat kerja/objek sektor di dekat kaki secara natural.</p>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer">
+                        <input type="radio" name="bg_mode" value="environment" class="peer sr-only" onchange="updateBgDesc()">
+                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-[#fffbee] peer-checked:border-[#f79039] peer-checked:bg-[#fffbee] transition-all">
+                            <div class="text-center">
+                                <i class="fas fa-mountain-sun text-2xl text-gray-600 mb-2"></i>
+                                <h3 class="font-bold text-sm">Pemandangan Jauh</h3>
+                                <p class="text-[10px] text-gray-500 mt-1">Background relevan terlihat samar di kejauhan (Depth of Field).</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+             <!-- 6. Pose Selection (Conditional) -->
+             <div id="poseSection" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <label class="block text-sm font-bold text-[#231f20] mb-3">
+                    <i class="fas fa-person-walking mr-2 text-[#f79039]"></i>6. Pilih Pose (Khusus Single Image)
+                </label>
+                
+                <!-- 4x2 Grid for Poses (8 Poses Total) -->
+                <div class="pose-grid">
+                    <!-- Row 1 -->
+                    <div onclick="selectPose('random')" id="pose-random" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20 bg-yellow-50 border-yellow-200">
+                        <i class="fas fa-dice text-xl text-[#f79039] mb-1"></i>
+                        <span class="text-[10px] leading-tight font-bold">Random</span>
+                    </div>
+                    <div onclick="selectPose('thumbs_up')" id="pose-thumbs_up" class="option-card selected p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-thumbs-up text-xl text-[#f79039] mb-1"></i>
+                        <span class="text-[10px] leading-tight">Jempol</span>
+                    </div>
+                    <div onclick="selectPose('pointing')" id="pose-pointing" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-hand-point-right text-xl text-green-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Menunjuk</span>
+                    </div>
+                    <div onclick="selectPose('waving')" id="pose-waving" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-hand-spock text-xl text-orange-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Menyapa</span>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div onclick="selectPose('open_palms')" id="pose-open_palms" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-hands text-xl text-blue-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Menengadah</span>
+                    </div>
+                    <div onclick="selectPose('hand_on_chest')" id="pose-hand_on_chest" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-hand-holding-heart text-xl text-red-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Pelayanan</span>
+                    </div>
+                    <div onclick="selectPose('thank_you')" id="pose-thank_you" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-praying-hands text-xl text-purple-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Terima Kasih</span>
+                    </div>
+                    <div onclick="selectPose('ready')" id="pose-ready" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                         <i class="fas fa-user-check text-xl text-teal-600 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Siap (Sigap)</span>
+                    </div>
+                </div>
+                <input type="hidden" id="poseValue" value="thumbs_up">
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Output & Tutorial (3 cols) -->
+        <div class="lg:col-span-3 space-y-5">
+            
+            <button onclick="generatePrompt()" class="btn-primary w-full font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 flex items-center justify-center gap-2 text-lg">
+                <i class="fas fa-wand-magic-sparkles"></i> BUAT PROMPT (JSON)
+            </button>
+
+            <!-- Output Display -->
+            <div class="bg-[#231f20] rounded-xl shadow-inner border border-gray-600 overflow-hidden flex flex-col h-[400px]">
+                <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-gray-600 shrink-0">
+                    <span class="text-xs text-gray-400 font-mono">prompt_data.json</span>
+                    <button onclick="copyToClipboard()" class="text-xs bg-[#f79039] hover:bg-[#e68a35] text-white font-bold px-3 py-1 rounded transition-colors">
+                        <i class="fas fa-copy mr-1"></i> Copy
+                    </button>
+                </div>
+                <div class="p-4 overflow-y-auto custom-scrollbar flex-grow">
+                    <pre id="jsonOutput" class="text-xs font-mono whitespace-pre-wrap leading-relaxed text-gray-300"></pre>
+                </div>
+            </div>
+
+            <!-- Asset Links -->
+            <div class="bg-[#fffbee] border border-yellow-200 p-4 rounded-xl text-sm shadow-sm">
+                <h4 class="font-bold text-[#231f20] mb-2"><i class="fas fa-download mr-2 text-[#f79039]"></i>Aset Referensi (Wajib)</h4>
+                <p class="text-xs text-gray-600 mb-3">Download gambar ini untuk diupload ke AI Generator sebagai referensi:</p>
+                
+                <div class="space-y-3">
+                    <div class="border-b border-yellow-100 pb-2">
+                        <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Karakter & Atribut</p>
+                        <ul class="space-y-1.5 text-xs">
+                            <li><a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-user-tie w-5 text-gray-400"></i> Bung Itung (Karakter Utama)</a></li>
+                            <li><a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-mobile w-5 text-gray-400"></i> HP Logo SE2026</a></li>
+                            <li><a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-hat-cowboy w-5 text-gray-400"></i> Topi SE2026</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Logo Resmi</p>
+                        <ul class="space-y-1.5 text-xs">
+                            <li><a href="https://drive.google.com/file/d/1w3mQmBImsMMM3QsYEvrn5zD1Me1UNkyu/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Vertikal</a></li>
+                            <li><a href="https://drive.google.com/file/d/1UC5VU4tCz4D35wiOWTZBYLFnc5ReYWGP/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Horizontal</a></li>
+                            <li><a href="https://drive.google.com/file/d/1CfmgL2gnwJ-rjw5BUo0YEU01nur-WT4v/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Tanpa Teks</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Tutorial Section -->
+    <section id="tutorial" class="bg-white border-t border-gray-200 py-10 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold text-center mb-8 text-[#231f20]"><i class="fas fa-graduation-cap text-[#febd26] mr-2"></i>Panduan Penggunaan</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Langkah-langkah</h3>
+                    <ol class="list-decimal list-outside ml-4 space-y-3 text-sm text-gray-700">
+                        <li>Pilih <strong>Format Gambar</strong>, <strong>Identitas (Gender & Warna Kulit)</strong>.</li>
+                        <li>Pilih <strong>Kategori KBLI 2025</strong>.</li>
+                        <li>Pilih <strong>Aksesoris</strong>. Jika ingin item adat daerah/spesifik, pilih opsi <em>Custom</em> dan ketik deskripsinya (Misal: "Buku Catatan", "Kain Ulos").</li>
+                        <li>Klik <strong>Buat Prompt (JSON)</strong> dan klik <strong>Copy</strong>.</li>
+                        <li>Buka AI Generator (Gemini/Midjourney).</li>
+                        <li><strong>PENTING:</strong> Upload gambar referensi (Bung Itung, dll) dan juga gambar barang adat kustom Anda jika ada.</li>
+                        <li>Paste JSON prompt yang sudah dicopy.</li>
+                    </ol>
+                    <div class="mt-4 p-4 bg-[#fffbee] rounded-lg border border-yellow-200">
+                        <p class="text-sm font-bold text-[#231f20]"><i class="fab fa-youtube text-red-600 mr-2"></i>Video Tutorial Lengkap:</p>
+                        <a href="http://s.bps.go.id/tutorialpromptbungitung" target="_blank" class="text-blue-600 underline text-sm break-all">http://s.bps.go.id/tutorialpromptbungitung</a>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Tips Agar Hasil Akurat</h3>
+                    <ul class="list-disc list-outside ml-4 space-y-2 text-sm text-gray-700">
+                        <li><strong>Smart Hijab:</strong> Jika memilih Hijab, pakaian otomatis menyesuaikan menjadi lengan panjang dan tertutup (syar'i).</li>
+                        <li><strong>Fitur Custom Pegang:</strong> Barang yang dimasukkan di "Custom Aksesoris Badan" akan otomatis diposisikan sedang dipegang oleh karakter.</li>
+                        <li><strong>Konsistensi Wajah:</strong> Selalu upload gambar "Bung Itung Original" sebagai referensi utama.</li>
+                        <li><strong>Masalah Kulit:</strong> Jika memilih warna kulit gelap, turunkan settingan Image Weight ke "Low" atau "Medium" pada AI Generator agar instruksi warna kulit lebih didengar.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hidden Asset Modal -->
+    <div id="assetModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="toggleAssetModal()"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <!-- Modal panel -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-folder-open text-[#f79039]"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Aset Referensi (Wajib)</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500 mb-4">Download gambar ini untuk diupload ke AI Generator sebagai referensi:</p>
+                                
+                                <div class="bg-[#fffbee] border border-yellow-200 p-4 rounded-xl text-sm shadow-sm text-left">
+                                    <div class="space-y-3">
+                                        <div class="border-b border-yellow-100 pb-2">
+                                            <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Karakter & Atribut</p>
+                                            <ul class="space-y-1.5 text-xs">
+                                                <li><a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-user-tie w-5 text-gray-400"></i> Bung Itung (Karakter Utama)</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-mobile w-5 text-gray-400"></i> HP Logo SE2026</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-hat-cowboy w-5 text-gray-400"></i> Topi SE2026</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Logo Resmi</p>
+                                            <ul class="space-y-1.5 text-xs">
+                                                <li><a href="https://drive.google.com/file/d/1w3mQmBImsMMM3QsYEvrn5zD1Me1UNkyu/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Vertikal</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1UC5VU4tCz4D35wiOWTZBYLFnc5ReYWGP/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Horizontal</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1CfmgL2gnwJ-rjw5BUo0YEU01nur-WT4v/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Tanpa Teks</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleAssetModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-[#231f20] text-white text-center py-8">
+        <p class="font-bold text-sm">Tim Pelaksana SE 2026 - Tim Kerja Kehumasan</p>
+        <p class="text-xs mt-1 text-[#febd26]">BPS Provinsi Papua ©2026 @faldodaffa</p>
+    </footer>
+
+    <script>
+        // --- DATA LOGIC ---
+        
+        const kbliData = {
+            "NONE": { label: "Tanpa Konteks Sektor", headgear_context: "None", attire_context: "Standard Bung Itung Vest", held_items: "", ground_items: "", bg: "Clean studio background, neutral color" },
+            "A": { label: "Pertanian, Kehutanan, Perikanan", headgear_context: "Traditional bamboo farmer hat (caping)", attire_context: "Farmer outfit with rolled-up sleeves", held_items: "holding a rice sickle", ground_items: "basket of vegetables, rice plants", bg: "rice field landscape, lush green forest, fishing boat at sea, plantation area" },
+            "B": { label: "Pertambangan", headgear_context: "Yellow safety construction helmet", attire_context: "Mining worker outfit with high-vis vest", held_items: "holding a geological hammer", ground_items: "piles of rocks, pickaxe, blueprints", bg: "open pit mine, quarry site with excavators in distance, oil rig in background" },
+            "C": { label: "Industri Pengolahan", headgear_context: "Factory safety cap", attire_context: "Factory worker jumpsuit or apron", held_items: "holding a wrench", ground_items: "manufactured products, tool box", bg: "factory interior with blurred machinery, assembly line background, industrial warehouse" },
+            "D": { label: "Listrik, Gas, Uap", headgear_context: "Safety helmet with ear protection", attire_context: "Technician uniform with safety gloves", held_items: "holding an electrical meter or tablet displaying energy charts", ground_items: "insulated tools, cables", bg: "power plant facility, solar panel field, electrical substation towers in distance" },
+            "E": { label: "Air & Limbah", headgear_context: "Safety cap", attire_context: "Sanitation worker uniform (blue accents)", held_items: "holding water pipe tools or water quality tester", ground_items: "recycling bin, pipes", bg: "water treatment plant, recycling facility, clean water reservoir" },
+            "F": { label: "Konstruksi", headgear_context: "Yellow safety helmet", attire_context: "Construction worker outfit with utility belt", held_items: "holding rolled architectural blueprints", ground_items: "measuring tape, bricklayer trowel, level", bg: "building construction site with cranes, unfinished building structure, road construction" },
+            "G": { label: "Perdagangan", headgear_context: "None", attire_context: "Shop assistant apron", held_items: "holding a point-of-sale scanner or calculator", ground_items: "shopping bags, product boxes", bg: "supermarket shelves, traditional market stalls, retail shop interior" },
+            "H": { label: "Pengangkutan", headgear_context: "Delivery cap", attire_context: "Courier uniform", held_items: "holding a cardboard package or delivery scanner", ground_items: "hand truck, stack of boxes", bg: "logistics warehouse with boxes, shipping container yard, delivery truck in background" },
+            "I": { label: "Akomodasi & Makan", headgear_context: "Chef hat", attire_context: "Chef apron or waiter uniform", held_items: "holding a serving tray with food or coffee cup", ground_items: "menu board, kitchen utensils", bg: "restaurant interior, hotel lobby, cafe setting, kitchen background" },
+            "J": { label: "Info & Komunikasi", headgear_context: "Headphones (around neck)", attire_context: "Smart casual tech hoodie", held_items: "holding a laptop with stickers", ground_items: "server cables, smartphone with code on screen", bg: "modern tech office, server room with blinking lights, broadcasting studio" },
+            "K": { label: "Keuangan", headgear_context: "None", attire_context: "Formal business suit", held_items: "holding a tablet with financial graphs", ground_items: "briefcase, calculator, coins", bg: "bank lobby, office with financial charts on glass walls, stock market screen" },
+            "L": { label: "Real Estat", headgear_context: "None", attire_context: "Real estate agent blazer", held_items: "holding a house model key or property brochures", ground_items: "building model, contract papers", bg: "residential housing complex, apartment building exterior, modern office building" },
+            "M": { label: "Profesional", headgear_context: "None", attire_context: "Lab coat or architect shirt", held_items: "holding scientific glassware/beaker or architect ruler", ground_items: "microscope, legal documents, magnifying glass", bg: "science laboratory, architect studio with drafting table, law library" },
+            "N": { label: "Penyewaan", headgear_context: "None", attire_context: "Service uniform", held_items: "holding rental contract keys", ground_items: "travel brochures, gardening tools (services)", bg: "car rental lot, travel agency office, employment agency reception" },
+            "O": { label: "Pemerintahan", headgear_context: "Peci", attire_context: "Civil servant uniform (KORPRI/Khaki)", held_items: "holding official documents", ground_items: "file folders, flag", bg: "government office building, city hall, flag pole area" },
+            "P": { label: "Pendidikan", headgear_context: "None", attire_context: "Teacher attire (Batik)", held_items: "holding a textbook or pointer stick", ground_items: "whiteboard marker, graduation cap, books", bg: "classroom with desks, library shelves, university campus" },
+            "Q": { label: "Kesehatan", headgear_context: "Surgical cap (optional)", attire_context: "Doctor coat or scrubs", held_items: "holding a clipboard or stethoscope", ground_items: "medical kit, thermometer", bg: "hospital corridor, doctor's examination room, pharmacy shelves" },
+            "R": { label: "Kesenian", headgear_context: "Beret", attire_context: "Creative artsy outfit", held_items: "holding a paintbrush or musical instrument", ground_items: "camera, palette, art supplies", bg: "art gallery, theater stage, museum exhibition, stadium stands" },
+            "S": { label: "Jasa Lainnya", headgear_context: "None", attire_context: "Service apron or uniform", held_items: "holding salon scissors/comb or repair tools", ground_items: "laundry basket, grooming kit", bg: "barbershop/salon interior, repair shop, laundry room, community center" },
+            "T": { label: "Rumah Tangga", headgear_context: "None", attire_context: "Casual home outfit with apron", held_items: "holding cleaning tools or cooking utensils", ground_items: "gardening equipment, iron", bg: "home kitchen, living room, home garden" },
+            "U": { label: "Badan Internasional", headgear_context: "None", attire_context: "Diplomatic suit", held_items: "holding international ID badge or briefcase", ground_items: "globe, documents", bg: "conference hall with international flags, diplomatic office" },
+            "STAKEHOLDER": { label: "Stakeholder / Pejabat", headgear_context: "None", attire_context: "Formal Batik shirt", held_items: "holding a plaque or certificate", ground_items: "microphone stand", bg: "formal meeting room, podium with microphone, office backdrop" }
+        };
+
+        // --- UI FUNCTIONS ---
+
+        function selectFormat(fmt) {
+            document.getElementById('formatValue').value = fmt;
+            document.getElementById('fmt-single').classList.remove('selected');
+            document.getElementById('fmt-multipose').classList.remove('selected');
+            document.getElementById('fmt-' + fmt).classList.add('selected');
+            
+            const poseSection = document.getElementById('poseSection');
+            if (fmt === 'multipose') {
+                poseSection.classList.add('opacity-50', 'pointer-events-none');
+            } else {
+                poseSection.classList.remove('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        function selectGender(gender) {
+            document.getElementById('genderValue').value = gender;
+            const buttons = document.querySelectorAll('.gender-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('selected', 'bg-[#febd26]', 'border-[#f79039]', 'text-[#231f20]', 'font-bold');
+                btn.classList.add('bg-white', 'text-gray-600');
+            });
+            const selectedBtn = document.getElementById('btn-' + gender);
+            selectedBtn.classList.add('selected', 'bg-[#febd26]', 'border-[#f79039]', 'text-[#231f20]', 'font-bold');
+            selectedBtn.classList.remove('bg-white', 'text-gray-600');
+        }
+
+        function selectPose(pose) {
+            document.getElementById('poseValue').value = pose;
+            document.querySelectorAll('#poseSection .option-card').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById('pose-' + pose).classList.add('selected');
+        }
+
+        function selectExpression(expr) {
+            document.getElementById('expressionValue').value = expr;
+            document.querySelectorAll('#expressionSection .option-card').forEach(el => el.classList.remove('selected'));
+            document.getElementById('expr-' + expr).classList.add('selected');
+        }
+
+        function toggleCustomInput(type, show) {
+            if (type === 'headgear') {
+                const el = document.getElementById('customHeadgearText');
+                if (show) el.classList.remove('hidden'); else el.classList.add('hidden');
+            } else if (type === 'accessory') {
+                const el = document.getElementById('customAccessoryText');
+                if (show) el.classList.remove('hidden'); else el.classList.add('hidden');
+            } else if (type === 'attire') {
+                const el = document.getElementById('customAttireText');
+                if (show) el.classList.remove('hidden'); else el.classList.add('hidden');
+            }
+        }
+
+        // Modal Function
+        function toggleAssetModal() {
+            const modal = document.getElementById('assetModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // GENERATE FUNCTION
+        function generatePrompt() {
+            try {
+                // 1. Gather Inputs
+                const format = document.getElementById('formatValue').value;
+                const gender = document.getElementById('genderValue').value;
+                const skinTone = document.getElementById('skinToneSelect').value;
+                const expression = document.getElementById('expressionValue').value;
+                const headgearSelection = document.querySelector('input[name="headgear"]:checked').value;
+                const sectorCode = document.getElementById('sectorSelect').value;
+                const attireMode = document.querySelector('input[name="attire"]:checked').value;
+                const bgMode = document.querySelector('input[name="bg_mode"]:checked').value;
+                let pose = document.getElementById('poseValue').value;
+
+                // Collect Body/Hand Checkboxes & Custom
+                let accessoriesList = [];
+                let customAccessoryText = "";
+                
+                // Custom Accessory Logic (Now part of handheld items)
+                let handhelds = [];
+                const kbliInfo = kbliData[sectorCode];
+                if (!kbliInfo) { alert("Error: Kode sektor tidak ditemukan."); return; }
+                if (sectorCode !== 'NONE' && kbliInfo.held_items) handhelds.push(kbliInfo.held_items);
+
+                if(document.getElementById('acc_custom').checked) {
+                    customAccessoryText = document.getElementById('customAccessoryText').value || "Custom Accessory";
+                    handhelds.push(`holding ${customAccessoryText}`); // Add to handhelds with "holding" prefix
+                }
+
+                if(document.getElementById('acc_noken').checked) {
+                    // DETAILED NOKEN PROMPT INJECTION (UPDATED v5.2)
+                    let nokenDetail = "Wearing a rustic, handmade Noken-style shoulder bag made from pliable, non-rigid natural beige bark fibers. The bag is unstructured and hangs limply slung over shoulder, its soft form entirely shaped by a small brown kraft paper notebook and a sleek black smartphone visible through the open-loop mesh.";
+                    accessoriesList.push(nokenDetail);
+                }
+
+                if(document.getElementById('acc_hpse').checked) accessoriesList.push("Smartphone displaying 'Sensus Ekonomi 2026' logo");
+                if(document.getElementById('acc_glasses').checked) accessoriesList.push("Eyeglasses");
+                
+                // 2. Build Descriptions
+                let charName = (gender === 'male') ? "Bung Itung" : "Mbak Sasa";
+                let baseFacialFeatures = "distinctive large round bulbous nose, cartoonish head-to-body ratio"; 
+                
+                // Expression Logic
+                const expressionMap = {
+                    'happy': "Wide friendly smile, eyebrows raised slightly, eyes squinted in curve (happy)",
+                    'sad': "Mouth curved downwards, eyebrows tilted inwards and upwards, teary or closed eyes (sad/disappointed)",
+                    'angry': "Furrowed brow, eyes glaring intently, jaw set stiffly, mouth either shouting or pressed tightly together (angry/fierce)",
+                    'fear': "Eyes wide open with small pupils, eyebrows raised high, mouth gaping open (fearful/shocked)",
+                    'shy': "Blush marks on cheeks, avoiding eye contact, shy smile (shy/bashful)"
+                };
+                let expressionDesc = expressionMap[expression] || expressionMap['happy'];
+                let facialFeatures = `${baseFacialFeatures}. Expression: ${expressionDesc}`;
+
+                // Skin Tone Logic
+                let skinInstruction = "";
+                let ethnicityDesc = "";
+                let recommendedImageWeight = "HIGH (1.0 - 1.2)";
+
+                if (skinTone === 'dark') {
+                    ethnicityDesc = "Dark black skin tone covering FACE, NECK, ARMS, and HANDS.";
+                    skinInstruction = "ENSURE UNIFORM DARK SKIN TONE ON FACE AND BODY. DO NOT MAKE HANDS WHITE.";
+                    recommendedImageWeight = "LOW to MEDIUM (0.6 - 0.8) - Critical to allow skin color change";
+                } else if (skinTone === 'tan') {
+                     ethnicityDesc = "Tan (Sawo Matang) Indonesian skin tone.";
+                } else {
+                     ethnicityDesc = "Fair/Light (Kuning Langsat) skin tone.";
+                }
+
+                // Headgear Description Logic
+                let headgearDesc = "None";
+                let customHeadgearText = "";
+                
+                if (headgearSelection === 'custom_headgear') {
+                    customHeadgearText = document.getElementById('customHeadgearText').value || "Custom Traditional Hat";
+                    headgearDesc = `Wearing ${customHeadgearText}`;
+                } else if (headgearSelection === 'topi_se2026') {
+                    headgearDesc = "Wearing Black cap with orange visor and 'Sensus Ekonomi 2026' logo";
+                } else if (headgearSelection === 'mahkota_papua') {
+                    // PRESET MAHKOTA PAPUA (DETAILED)
+                    headgearDesc = "Wearing detailed traditional Papuan headdress. Upper section: Stiff, coarse dark brown fibers radiating upwards (cassowary feathers). Lower section: Woven headband decorated with off-white cowrie shells in floral patterns, bright red beads, and vibrant yellow piping.";
+                } else if (headgearSelection === 'contextual') {
+                    if (kbliInfo.headgear_context !== "None") headgearDesc = "Wearing " + kbliInfo.headgear_context;
+                } else if (headgearSelection === 'helm_proyek') {
+                     headgearDesc = "Wearing Yellow safety construction helmet";
+                } else if (headgearSelection === 'caping') {
+                     headgearDesc = "Wearing Traditional bamboo farmer hat (caping)";
+                }
+
+                // Hair & Hijab Logic
+                let additionalNegativePrompts = "";
+                let headgearActive = (headgearDesc !== "None");
+
+                if (gender === 'female_hijab') {
+                    additionalNegativePrompts += ", visible hair, hair roots, hair texture";
+                    genderDesc = `Female version of Bung Itung (Hijab). Wearing yellow hijab tucked in. **Note: ${headgearActive ? headgearDesc + ' is worn ON TOP of the hijab.' : ''} ABSOLUTELY NO HAIR VISIBLE.** Facial features: ${facialFeatures}.`;
+                     if (skinTone === 'dark') ethnicityDesc = "Dark black skin tone covering FACE and HANDS (Body covered).";
+                } else {
+                    let hairDescription = "short neat black hair."; 
+                    if (gender !== 'male') hairDescription = "Hair: Ponytail."; 
+
+                    if (skinTone === 'dark') {
+                         hairDescription = (gender === 'male') ? "short curly black hair." : "Hair: Curly Ponytail.";
+                    }
+
+                    if (headgearActive) {
+                         hairDescription = `Neat hair tucked under the ${headgearDesc}.`;
+                         if (skinTone === 'dark') hairDescription = `Curly hair mostly tucked under the ${headgearDesc}.`;
+                    }
+                    genderDesc = `Male/Female. Facial features: ${facialFeatures}. ${hairDescription}`;
+                }
+
+                // Attire Description & Modesty Logic
+                let attireDesc = "";
+                let customAttireText = "";
+
+                if (attireMode === 'custom_attire') {
+                    customAttireText = document.getElementById('customAttireText').value || "Custom Traditional Attire";
+                    attireDesc = `Wearing ${customAttireText}.`;
+                } else if (attireMode === 'original' || sectorCode === 'NONE') {
+                    attireDesc = "Wearing Official census uniform: Black vest with yellow accents, yellow collared shirt underneath, ID Card lanyard.";
+                } else {
+                    attireDesc = `Wearing ${kbliInfo.attire_context}.`;
+                }
+
+                // Inject Modesty Logic for Hijab
+                if (gender === 'female_hijab') {
+                    attireDesc += " (Modest, long-sleeved top and full-length bottom ensuring full coverage)";
+                }
+
+                // Pose Description
+                let poseDesc = "Standing naturally";
+                if (pose === 'random') {
+                    const randomPoses = [
+                        "Presenting gesture with open arms, welcoming",
+                        "Standing confidently at camera",
+                        "Walking forward with purpose",
+                        "Standing with hands on hips",
+                        "Giving a thumbs up with one hand"
+                    ];
+                    poseDesc = randomPoses[Math.floor(Math.random() * randomPoses.length)];
+                } else if (format === 'single') {
+                    const poseMap = {
+                         'thumbs_up': "Giving a thumbs up",
+                         'pointing': "Pointing finger to the side (empty space for text)",
+                         'waving': "Waving hand in a friendly greeting gesture",
+                         'open_palms': "Presenting gesture with open palms facing slightly upwards",
+                         'hand_on_chest': "One hand placed respectfully on the chest over the heart, service gesture",
+                         'thank_you': "Hands clasped together in a gesture of gratitude or slight bow saying thank you",
+                         'ready': "Standing tall with hands on hips or crossed, ready for action (sigap)"
+                     };
+                     poseDesc = poseMap[pose] || "Standing";
+                } else {
+                    // Updated Multipose Logic
+                    poseDesc = `Character Reference Sheet. 4 distinct, dynamic full-body action poses arranged in a 2x2 grid. All poses show the character with a ${expression} expression. No static side views. Consistent character design across all views. White background.`;
+                }
+
+                // Env & Props
+                let envDesc = "";
+                let itemsGround = (sectorCode === 'NONE' || format === 'multipose') ? "No ground props, clean floor." : `Props on ground/nearby: ${kbliInfo.ground_items}.`;
+                envDesc = (sectorCode === 'NONE' || format === 'multipose' || bgMode === 'prop_focus') ? 
+                    "Clean, plain white/light studio background." : 
+                    `${kbliInfo.bg}. Background is blurred (depth of field).`;
+
+                // Handheld Smartphone Logic
+                if (accessoriesList.some(acc => acc.includes("Smartphone"))) {
+                     handhelds.push("holding Smartphone displaying 'Sensus Ekonomi 2026' logo");
+                }
+                
+                let itemsHeld = handhelds.join(", ");
+                // Filter out smartphone from wearables as it's handheld
+                let wearablesStr = accessoriesList.filter(a => !a.includes("Smartphone")).join(", ");
+                let papuaForce = (skinTone === 'dark') ? "DARK BROWN SKIN. " : "";
+
+                const fullPrompt = `(Image Reference Style). 3D Render. Pixar Disney Style. CHARACTER: ${charName} (${genderDesc}). **CRITICAL: KEEP FACIAL SHAPE IDENTICAL TO REFERENCE.** ${ethnicityDesc} ${skinInstruction} ${papuaForce} \n\nWEARABLES: ${headgearDesc}. ${attireDesc} ${wearablesStr}. \n\nACTION: ${poseDesc}. ${itemsHeld}. \n\nENV: ${envDesc} ${itemsGround}.`;
+
+                // JSON Object
+                const promptData = {
+                    "meta": {
+                        "project": "SE2026 Nusantara",
+                        "version": "5.3 (Final UX)"
+                    },
+                    "generation_settings": {
+                        "aspect_ratio": format === 'single' ? "2:3 (Portrait)" : "1:1 (Square)",
+                        "image_weight": recommendedImageWeight
+                    },
+                    "image_references": {
+                        "main_character": "Upload 'Bung Itung Original'",
+                        "custom_uploads": []
+                    },
+                    "final_positive_prompt": fullPrompt,
+                    "negative_prompt": "photorealistic, real human, ugly, distorted, bad anatomy, " + additionalNegativePrompts
+                };
+
+                // Dynamic Upload Instructions
+                if (headgearSelection === 'topi_se2026') promptData.image_references.custom_uploads.push("Upload 'Topi SE2026'");
+                if (headgearSelection === 'custom_headgear') promptData.image_references.custom_uploads.push(`Upload Reference Image for: '${customHeadgearText}'`);
+                if (attireMode === 'custom_attire') promptData.image_references.custom_uploads.push(`Upload Reference Image for: '${customAttireText}'`);
+                if (document.getElementById('acc_custom').checked) promptData.image_references.custom_uploads.push(`Upload Reference Image for: '${customAccessoryText}'`);
+                if (document.getElementById('acc_hpse').checked) promptData.image_references.custom_uploads.push("Upload 'HP SE2026'");
+
+                document.getElementById('jsonOutput').innerHTML = syntaxHighlight(JSON.stringify(promptData, null, 2));
+
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+        }
+
+        // Helper: JSON Syntax Highlighting
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) { cls = 'json-key'; } else { cls = 'json-string'; }
+                } else if (/true|false/.test(match)) { cls = 'json-boolean'; } else if (/null/.test(match)) { cls = 'json-boolean'; }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('jsonOutput').textContent;
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try { document.execCommand('copy'); alert("Prompt JSON berhasil dicopy!"); } catch (err) { alert("Gagal copy manual."); }
+            document.body.removeChild(textArea);
+        }
+
+        function updateBgDesc() {}
+        
+        document.addEventListener('DOMContentLoaded', () => {
+             // Optional: generatePrompt(); 
+        });
+    </script>
 </body>
 </html>
- 
+}
