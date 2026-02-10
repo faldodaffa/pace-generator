@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PACE - Prompt Assistant & Creative Engine v5.3 (Final UX)</title>
+    <title>PACE - Prompt Assistant & Creative Engine v5.4 (Color Corrected)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -13,7 +13,6 @@
         :root {
             --se-orange: #f79039;       
             --se-yellow-asa: #febd26;   
-            --se-yellow-supp: #ffd635;  
             --se-light-bg: #fffbee;     
             --se-dark: #231f20;         
         }
@@ -22,10 +21,11 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--se-light-bg);
             color: var(--se-dark);
+            padding-bottom: 80px; /* Space for fixed button on mobile */
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #aaa; }
@@ -33,12 +33,13 @@
         .input-card {
             transition: all 0.3s ease;
             border: 1px solid #e5e7eb;
+            background: white;
         }
         
         .input-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            border-color: var(--se-yellow-asa);
+            box-shadow: 0 10px 15px -3px rgba(247, 144, 57, 0.1);
+            border-color: var(--se-orange);
         }
 
         .select-custom {
@@ -54,7 +55,7 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
-            background-color: #fff;
+            background-color: #f9fafb;
         }
         .option-card:hover {
             border-color: var(--se-yellow-asa);
@@ -74,70 +75,74 @@
             top: 5px;
             right: 5px;
             color: var(--se-orange);
+            font-size: 0.8rem;
         }
         
-        /* grids */
+        /* Grids */
         .pose-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
-        .expression-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+        .expression-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
 
         /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--se-orange) 0%, #e68a35 100%);
-            color: white;
+            background: linear-gradient(135deg, #231f20 0%, #000000 100%);
+            color: var(--se-orange);
+            border: 2px solid var(--se-orange);
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #e68a35 0%, #d57e2f 100%);
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, var(--se-orange) 0%, #e68a35 100%);
+            color: white;
+            border-color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(247, 144, 57, 0.4);
         }
 
         .gender-btn.selected {
-            background-color: var(--se-yellow-asa);
+            background-color: var(--se-orange);
+            color: white;
             border-color: var(--se-orange);
-            color: var(--se-dark);
-            font-weight: 700;
+            font-weight: 600;
         }
-        
-        /* JSON Syntax Highlighting */
-        .json-key { color: #0284c7; }
-        .json-string { color: #d97706; }
-        .json-number { color: #16a34a; }
-        .json-boolean { color: #dc2626; }
+
+        /* Responsive Fixes */
+        @media (max-width: 640px) {
+            .pose-grid, .expression-grid { grid-template-columns: repeat(3, 1fr); }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col">
 
     <!-- Header -->
     <header class="bg-[#231f20] text-white shadow-lg border-b-4 border-[#f79039] sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="bg-[#febd26] text-[#231f20] p-2 rounded-lg font-bold text-xl h-12 w-12 flex items-center justify-center shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-[#f79039] text-[#231f20] p-1.5 rounded-lg font-bold text-lg h-10 w-10 flex items-center justify-center shadow-md">
                     SE
                 </div>
                 <div>
-                    <h1 class="text-lg md:text-2xl font-bold tracking-tight">PACE SE2026 v5.3</h1>
-                    <p class="text-[#febd26] text-xs md:text-sm font-medium">Prompt Assistant & Creative Engine</p>
+                    <h1 class="text-lg md:text-xl font-bold tracking-tight leading-tight">PACE v5.4</h1>
+                    <p class="text-gray-400 text-[10px] md:text-xs">Edisi Nusantara & Jingga Nadi</p>
                 </div>
             </div>
             <!-- Header Buttons -->
-            <div class="hidden md:flex items-center gap-3 text-right text-xs">
-                <button onclick="toggleAssetModal()" class="inline-flex items-center bg-transparent border border-[#febd26] text-[#febd26] hover:bg-[#febd26] hover:text-[#231f20] font-bold py-2 px-4 rounded transition-colors shadow-sm">
-                    <i class="fas fa-folder-open mr-2"></i>Aset Referensi
+            <div class="flex items-center gap-2 text-right text-xs">
+                <button onclick="toggleAssetModal()" class="hidden md:inline-flex items-center bg-transparent border border-[#febd26] text-[#febd26] hover:bg-[#febd26] hover:text-[#231f20] font-bold py-1.5 px-3 rounded transition-colors">
+                    <i class="fas fa-folder-open mr-2"></i>Aset
                 </button>
-                <a href="#tutorial" class="inline-flex items-center bg-[#f79039] hover:bg-[#e68a35] text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
-                    <i class="fas fa-book-open mr-2"></i>Petunjuk
+                <a href="#tutorial" class="inline-flex items-center bg-[#f79039] hover:bg-[#e68a35] text-white font-bold py-1.5 px-3 rounded transition-colors">
+                    <i class="fas fa-info-circle md:mr-2"></i><span class="hidden md:inline">Petunjuk</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
+    <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow w-full">
         
-        <!-- LEFT COLUMN: Character & Style (4 cols) -->
+        <!-- LEFT COLUMN: Identity & Style (4 cols) -->
         <div class="lg:col-span-4 space-y-5">
             
             <!-- 1. Format Gambar -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
+            <div class="p-5 rounded-xl shadow-sm input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3 border-b pb-2 border-gray-100">
                     <i class="fas fa-image mr-2 text-[#f79039]"></i>1. Format Gambar
                 </label>
                 <div class="grid grid-cols-2 gap-3">
@@ -149,98 +154,100 @@
                     <div onclick="selectFormat('multipose')" id="fmt-multipose" class="option-card p-3 rounded-lg text-center">
                         <i class="fas fa-users-viewfinder text-2xl text-[#febd26] mb-2"></i>
                         <div class="text-xs font-bold">Multipose (2x2)</div>
-                        <div class="text-[10px] text-gray-500">Dinamis (No Side View)</div>
+                        <div class="text-[10px] text-gray-500">Character Sheet</div>
                     </div>
                 </div>
                 <input type="hidden" id="formatValue" value="single">
             </div>
 
             <!-- 2. Gender & Skin Tone -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
+            <div class="p-5 rounded-xl shadow-sm input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3 border-b pb-2 border-gray-100">
                     <i class="fas fa-user-circle mr-2 text-[#f79039]"></i>2. Identitas Karakter
                 </label>
                 
                 <div class="mb-4">
                     <span class="text-xs font-semibold text-gray-500 block mb-2">Gender:</span>
                     <div class="flex gap-2">
-                        <button type="button" onclick="selectGender('male')" id="btn-male" class="gender-btn selected flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Pria</button>
-                        <button type="button" onclick="selectGender('female_nonhijab')" id="btn-female_nonhijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Wanita</button>
-                        <button type="button" onclick="selectGender('female_hijab')" id="btn-female_hijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm transition-all">Hijab</button>
+                        <button type="button" onclick="selectGender('male')" id="btn-male" class="gender-btn selected flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-xs transition-all">Pria</button>
+                        <button type="button" onclick="selectGender('female_nonhijab')" id="btn-female_nonhijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-xs transition-all">Wanita</button>
+                        <button type="button" onclick="selectGender('female_hijab')" id="btn-female_hijab" class="gender-btn flex-1 py-2 rounded-lg border border-gray-200 bg-white text-gray-600 text-xs transition-all">Hijab</button>
                     </div>
                     <input type="hidden" id="genderValue" value="male">
                 </div>
 
                 <div>
-                    <span class="text-xs font-semibold text-gray-500 block mb-2">Warna Kulit (Skin Tone):</span>
-                    <select id="skinToneSelect" class="select-custom w-full bg-[#fffbee] border border-gray-300 text-[#231f20] text-sm rounded-lg block p-2.5 focus:border-[#f79039] focus:ring-[#f79039]">
-                        <option value="original">Kuning Langsat </option>
-                        <option value="tan">Sawo Matang </option>
-                        <option value="dark">Gelap Eksotis </option>
+                    <span class="text-xs font-semibold text-gray-500 block mb-2">Warna Kulit:</span>
+                    <select id="skinToneSelect" class="select-custom w-full bg-gray-50 border border-gray-300 text-[#231f20] text-sm rounded-lg block p-2.5 focus:border-[#f79039] focus:ring-[#f79039]">
+                        <option value="fair">Kuning Langsat</option>
+                        <option value="tan">Sawo Matang</option>
+                        <option value="dark">Gelap Eksotis</option>
                     </select>
                 </div>
             </div>
 
             <!-- 3. Accessories (Wearables) -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 input-card">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-hat-cowboy mr-2 text-[#f79039]"></i>3. Aksesoris Kepala (Wearables)
+            <div class="p-5 rounded-xl shadow-sm input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3 border-b pb-2 border-gray-100">
+                    <i class="fas fa-hat-cowboy mr-2 text-[#f79039]"></i>3. Aksesoris Kepala
                 </label>
 
-                <!-- Headgear (Radio - Mutually Exclusive) -->
+                <!-- Headgear -->
                 <div class="mb-4 space-y-2">
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100 transition-colors">
                         <input type="radio" name="headgear" value="none" class="text-[#f79039] focus:ring-[#f79039]" checked onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm">Tanpa Topi Khusus</span>
+                        <span class="text-xs font-medium">Tanpa Topi Khusus</span>
                     </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100 transition-colors">
                         <input type="radio" name="headgear" value="topi_se2026" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm font-semibold text-[#231f20]">Topi SE2026 (Hitam)</span>
+                        <span class="text-xs font-semibold text-[#231f20]">Topi SE2026</span>
+                        <span class="text-[10px] text-red-500 bg-red-50 px-1 rounded ml-auto">Wajib Upload Ref</span>
                     </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100 transition-colors">
                         <input type="radio" name="headgear" value="mahkota_papua" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm font-semibold text-[#231f20]">Mahkota Adat Papua (Kasuari)</span>
+                        <span class="text-xs font-semibold text-[#231f20]">Mahkota Adat Papua</span>
                     </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100 transition-colors">
                         <input type="radio" name="headgear" value="contextual" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', false)">
-                        <span class="text-sm font-semibold text-blue-600">Sesuai Sektor (Helm/Caping)</span>
+                        <span class="text-xs font-semibold text-blue-600">Sesuai Sektor (Helm/Caping)</span>
                     </label>
                     
                     <!-- Custom Headgear Input -->
-                    <div class="border-t border-dashed border-gray-300 pt-2 mt-1">
-                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <div class="pt-1">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100 transition-colors">
                             <input type="radio" name="headgear" value="custom_headgear" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('headgear', true)">
-                            <span class="text-sm font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Topi Adat/Lokal</span>
+                            <span class="text-xs font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Topi Adat</span>
                         </label>
-                        <input type="text" id="customHeadgearText" placeholder="Contoh: Udeng Bali / Blangkon Jawa / Ti'i Langga" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
+                        <input type="text" id="customHeadgearText" placeholder="Contoh: Udeng Bali / Blangkon" class="hidden w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
                     </div>
                 </div>
 
-                <label class="block text-sm font-bold text-[#231f20] mb-3 mt-4">
-                    <i class="fas fa-briefcase mr-2 text-[#f79039]"></i>Aksesoris Badan/Tangan
+                <label class="block text-sm font-bold text-[#231f20] mb-3 mt-4 border-b pb-2 border-gray-100">
+                    <i class="fas fa-briefcase mr-2 text-[#f79039]"></i>Aksesoris Badan
                 </label>
-                <!-- Body/Hand (Checkbox - Multiple Allowed) -->
+                <!-- Body/Hand -->
                 <div class="space-y-2">
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100">
                         <input type="checkbox" id="acc_noken" class="text-[#f79039] rounded focus:ring-[#f79039]">
-                        <span class="text-sm">Tas Noken Papua</span>
+                        <span class="text-xs">Tas Noken Papua</span>
                     </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100">
                         <input type="checkbox" id="acc_hpse" class="text-[#f79039] rounded focus:ring-[#f79039]">
-                        <span class="text-sm font-bold text-[#231f20]">HP Logo SE2026</span>
+                        <span class="text-xs font-bold text-[#231f20]">HP Logo SE2026</span>
+                        <span class="text-[10px] text-red-500 bg-red-50 px-1 rounded ml-auto">Wajib Upload Ref</span>
                     </label>
-                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100">
                         <input type="checkbox" id="acc_glasses" class="text-[#f79039] rounded focus:ring-[#f79039]">
-                        <span class="text-sm">Kacamata</span>
+                        <span class="text-xs">Kacamata</span>
                     </label>
 
                     <!-- Custom Accessory Input -->
-                    <div class="border-t border-dashed border-gray-300 pt-2 mt-1">
-                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-1 rounded">
+                    <div class="pt-1">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-orange-50 p-2 rounded border border-transparent hover:border-orange-100">
                             <input type="checkbox" id="acc_custom" class="text-[#f79039] rounded focus:ring-[#f79039]" onchange="toggleCustomInput('accessory', this.checked)">
-                            <span class="text-sm font-bold text-[#f79039]"><i class="fas fa-hand-holding mr-1"></i> Custom Pegang (Buku/Tablet/dll)</span>
+                            <span class="text-xs font-bold text-[#f79039]"><i class="fas fa-hand-holding mr-1"></i> Custom Pegang</span>
                         </label>
-                        <input type="text" id="customAccessoryText" placeholder="Contoh: Buku, Pensil, Tablet, Kain Ulos, Sarung Batik" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
+                        <input type="text" id="customAccessoryText" placeholder="Contoh: Tablet, Buku, Kain Ulos" class="hidden w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
                     </div>
                 </div>
             </div>
@@ -251,51 +258,63 @@
         <div class="lg:col-span-5 space-y-5">
 
              <!-- NEW: Expression Selection -->
-             <div id="expressionSection" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-face-smile mr-2 text-[#f79039]"></i>Ekspresi Wajah / Emosi
+             <div id="expressionSection" class="p-5 rounded-xl shadow-sm input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3 border-b pb-2 border-gray-100">
+                    <i class="fas fa-face-smile mr-2 text-[#f79039]"></i>4. Ekspresi Wajah
                 </label>
                 
                 <div class="expression-grid">
-                    <div onclick="selectExpression('happy')" id="expr-happy" class="option-card selected p-2 rounded text-center flex flex-col items-center justify-center h-16 bg-yellow-50 border-yellow-200">
-                        <i class="fas fa-face-laugh-beam text-xl text-[#f79039] mb-1"></i>
+                    <div onclick="selectExpression('happy')" id="expr-happy" class="option-card selected p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-face-laugh-beam text-2xl text-[#f79039] mb-1"></i>
                         <span class="text-[10px] leading-tight font-bold">Ceria</span>
                     </div>
-                    <div onclick="selectExpression('sad')" id="expr-sad" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-sad-tear text-xl text-blue-500 mb-1"></i>
+                    <div onclick="selectExpression('laugh')" id="expr-laugh" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-laugh-squint text-2xl text-orange-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Tertawa</span>
+                    </div>
+                    <div onclick="selectExpression('sad')" id="expr-sad" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-face-sad-tear text-2xl text-blue-500 mb-1"></i>
                         <span class="text-[10px] leading-tight">Sedih</span>
                     </div>
-                    <div onclick="selectExpression('angry')" id="expr-angry" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-angry text-xl text-red-600 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Marah</span>
+                    <div onclick="selectExpression('shock')" id="expr-shock" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-face-surprise text-2xl text-purple-600 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Kaget (Shock)</span>
                     </div>
-                    <div onclick="selectExpression('fear')" id="expr-fear" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-flushed text-xl text-purple-600 mb-1"></i>
+                    <div onclick="selectExpression('surprised')" id="expr-surprised" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-face-grin-wide text-2xl text-teal-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Terkejut</span>
+                    </div>
+                    <div onclick="selectExpression('fear')" id="expr-fear" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-face-flushed text-2xl text-indigo-600 mb-1"></i>
                         <span class="text-[10px] leading-tight">Takut</span>
                     </div>
-                    <div onclick="selectExpression('shy')" id="expr-shy" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-16">
-                        <i class="fas fa-face-kiss-wink-heart text-xl text-pink-500 mb-1"></i>
+                    <div onclick="selectExpression('shy')" id="expr-shy" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-face-kiss-wink-heart text-2xl text-pink-500 mb-1"></i>
                         <span class="text-[10px] leading-tight">Malu</span>
+                    </div>
+                    <div onclick="selectExpression('thinking')" id="expr-thinking" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-lightbulb text-2xl text-yellow-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Berpikir</span>
                     </div>
                 </div>
                 <input type="hidden" id="expressionValue" value="happy">
             </div>
             
-            <!-- 4. Context (KBLI 2025) -->
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#febd26]">
+            <!-- 5. Context (KBLI 2025) -->
+            <div class="p-6 rounded-xl shadow-md border-l-4 border-[#febd26] bg-white">
                 <label class="block text-lg font-bold text-[#231f20] mb-1">
-                    <i class="fas fa-building mr-2 text-[#f79039]"></i>4. Konteks Sektor (KBLI 2025)
+                    <i class="fas fa-building mr-2 text-[#f79039]"></i>5. Konteks Sektor
                 </label>
-                <p class="text-xs text-gray-500 mb-4">Pilih kategori untuk menyesuaikan visual pakaian & alat.</p>
+                <p class="text-xs text-gray-500 mb-4">Pilih kategori usaha (KBLI 2025).</p>
                 
-                <select id="sectorSelect" class="select-custom w-full bg-[#fffbee] border border-yellow-300 text-[#231f20] text-sm rounded-lg focus:ring-[#f79039] focus:border-[#f79039] block p-3 mb-4 font-medium">
+                <select id="sectorSelect" class="select-custom w-full bg-gray-50 border border-yellow-300 text-[#231f20] text-sm rounded-lg focus:ring-[#f79039] focus:border-[#f79039] block p-3 mb-4 font-medium">
                     <option value="NONE" class="font-bold">-- Tanpa Konteks Sektor (Polos) --</option>
                     <option value="A">A. Pertanian, Kehutanan, dan Perikanan</option>
                     <option value="B">B. Pertambangan dan Penggalian</option>
-                    <option value="C">C. Industri Pengolahan (Pabrik/Manufaktur)</option>
-                    <option value="D">D. Pengadaan Listrik, Gas, Uap/Air Panas</option>
-                    <option value="E">E. Pengadaan Air & Pengelolaan Limbah</option>
-                    <option value="F">F. Konstruksi (Bangunan)</option>
+                    <option value="C">C. Industri Pengolahan</option>
+                    <option value="D">D. Pengadaan Listrik, Gas, Uap</option>
+                    <option value="E">E. Pengadaan Air & Limbah</option>
+                    <option value="F">F. Konstruksi</option>
                     <option value="G">G. Perdagangan Besar & Eceran</option>
                     <option value="H">H. Pengangkutan & Pergudangan</option>
                     <option value="I">I. Penyediaan Akomodasi & Makan Minum</option>
@@ -303,11 +322,11 @@
                     <option value="K">K. Aktivitas Keuangan & Asuransi</option>
                     <option value="L">L. Real Estat</option>
                     <option value="M">M. Aktivitas Profesional, Ilmiah & Teknis</option>
-                    <option value="N">N. Aktivitas Penyewaan & Sewa Guna Usaha</option>
-                    <option value="O">O. Administrasi Pemerintahan & Pertahanan</option>
+                    <option value="N">N. Aktivitas Penyewaan & Sewa Guna</option>
+                    <option value="O">O. Administrasi Pemerintahan</option>
                     <option value="P">P. Pendidikan</option>
-                    <option value="Q">Q. Aktivitas Kesehatan Manusia & Sosial</option>
-                    <option value="R">R. Kesenian, Hiburan & Rekreasi</option>
+                    <option value="Q">Q. Kesehatan & Sosial</option>
+                    <option value="R">R. Kesenian & Hiburan</option>
                     <option value="S">S. Aktivitas Jasa Lainnya</option>
                     <option value="T">T. Aktivitas Rumah Tangga</option>
                     <option value="U">U. Aktivitas Badan Internasional</option>
@@ -315,68 +334,62 @@
                 </select>
 
                 <!-- Baju Option -->
-                <div class="bg-[#fffbee] p-3 rounded-lg border border-yellow-100">
+                <div class="bg-gray-50 p-3 rounded-lg border border-yellow-100">
                     <span class="text-xs font-bold text-gray-600 block mb-2">Pilihan Pakaian Utama:</span>
                     <div class="flex flex-col gap-2">
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" name="attire" value="original" class="text-[#f79039] focus:ring-[#f79039]" checked onclick="toggleCustomInput('attire', false)">
-                            <span class="ml-2 text-sm text-gray-700">Seragam Asli (Rompi Sensus)</span>
+                            <span class="ml-2 text-xs text-gray-700">Seragam Asli (Rompi Sensus)</span>
                         </label>
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" name="attire" value="contextual" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('attire', false)">
-                            <span class="ml-2 text-sm text-gray-700">Sesuai Profesi KBLI (Dokter/Insinyur/dll)</span>
+                            <span class="ml-2 text-xs text-gray-700">Sesuai Profesi KBLI (Dokter/Insinyur)</span>
                         </label>
                         
                         <!-- Custom Attire -->
-                        <div class="border-t border-gray-200 mt-1 pt-1">
+                        <div class="pt-1">
                             <label class="flex items-center cursor-pointer">
                                 <input type="radio" name="attire" value="custom_attire" class="text-[#f79039] focus:ring-[#f79039]" onclick="toggleCustomInput('attire', true)">
-                                <span class="ml-2 text-sm font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom Pakaian</span>
+                                <span class="ml-2 text-xs font-bold text-[#f79039]"><i class="fas fa-edit mr-1"></i> Custom (Batik/Adat)</span>
                             </label>
-                            <input type="text" id="customAttireText" placeholder="Contoh: Baju Batik Jawa / Baju Adat Bali" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
+                            <input type="text" id="customAttireText" placeholder="Contoh: Baju Batik Jawa / Baju Adat Bali" class="hidden w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#f79039]">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 5. Background Setting -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-image mr-2 text-[#f79039]"></i>5. Pengaturan Latar Belakang
+            <!-- 6. Background Setting -->
+            <div class="p-5 rounded-xl shadow-sm input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3 border-b pb-2 border-gray-100">
+                    <i class="fas fa-image mr-2 text-[#f79039]"></i>6. Latar Belakang
                 </label>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <label class="cursor-pointer">
                         <input type="radio" name="bg_mode" value="prop_focus" class="peer sr-only" checked onchange="updateBgDesc()">
-                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-[#fffbee] peer-checked:border-[#f79039] peer-checked:bg-[#fffbee] transition-all">
-                            <div class="text-center">
-                                <i class="fas fa-box-open text-2xl text-gray-600 mb-2"></i>
-                                <h3 class="font-bold text-sm">Fokus Barang/Alat</h3>
-                                <p class="text-[10px] text-gray-500 mt-1">Latar bersih, dikelilingi alat kerja/objek sektor di dekat kaki secara natural.</p>
-                            </div>
+                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-gray-50 peer-checked:border-[#f79039] peer-checked:bg-[#fff8f0] transition-all text-center">
+                            <i class="fas fa-box-open text-2xl text-gray-600 mb-2"></i>
+                            <h3 class="font-bold text-xs">Fokus Barang/Alat</h3>
                         </div>
                     </label>
 
                     <label class="cursor-pointer">
                         <input type="radio" name="bg_mode" value="environment" class="peer sr-only" onchange="updateBgDesc()">
-                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-[#fffbee] peer-checked:border-[#f79039] peer-checked:bg-[#fffbee] transition-all">
-                            <div class="text-center">
-                                <i class="fas fa-mountain-sun text-2xl text-gray-600 mb-2"></i>
-                                <h3 class="font-bold text-sm">Pemandangan Jauh</h3>
-                                <p class="text-[10px] text-gray-500 mt-1">Background relevan terlihat samar di kejauhan (Depth of Field).</p>
-                            </div>
+                        <div class="rounded-lg border-2 border-gray-200 p-4 hover:bg-gray-50 peer-checked:border-[#f79039] peer-checked:bg-[#fff8f0] transition-all text-center">
+                            <i class="fas fa-mountain-sun text-2xl text-gray-600 mb-2"></i>
+                            <h3 class="font-bold text-xs">Pemandangan Jauh</h3>
                         </div>
                     </label>
                 </div>
             </div>
 
-             <!-- 6. Pose Selection (Conditional) -->
-             <div id="poseSection" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <label class="block text-sm font-bold text-[#231f20] mb-3">
-                    <i class="fas fa-person-walking mr-2 text-[#f79039]"></i>6. Pilih Pose (Khusus Single Image)
+             <!-- 7. Pose Selection (Conditional) -->
+             <div id="poseSection" class="p-5 rounded-xl shadow-sm input-card">
+                <label class="block text-sm font-bold text-[#231f20] mb-3 border-b pb-2 border-gray-100">
+                    <i class="fas fa-person-walking mr-2 text-[#f79039]"></i>7. Pilih Pose
                 </label>
                 
-                <!-- 4x2 Grid for Poses (8 Poses Total) -->
+                <!-- 4x2 Grid for Poses -->
                 <div class="pose-grid">
                     <!-- Row 1 -->
                     <div onclick="selectPose('random')" id="pose-random" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20 bg-yellow-50 border-yellow-200">
@@ -397,9 +410,9 @@
                     </div>
                     
                     <!-- Row 2 -->
-                    <div onclick="selectPose('open_palms')" id="pose-open_palms" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
-                        <i class="fas fa-hands text-xl text-blue-500 mb-1"></i>
-                        <span class="text-[10px] leading-tight">Menengadah</span>
+                    <div onclick="selectPose('salute')" id="pose-salute" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
+                        <i class="fas fa-user-shield text-xl text-blue-500 mb-1"></i>
+                        <span class="text-[10px] leading-tight">Hormat</span>
                     </div>
                     <div onclick="selectPose('hand_on_chest')" id="pose-hand_on_chest" class="option-card p-2 rounded text-center flex flex-col items-center justify-center h-20">
                         <i class="fas fa-hand-holding-heart text-xl text-red-500 mb-1"></i>
@@ -419,50 +432,33 @@
 
         </div>
 
-        <!-- RIGHT COLUMN: Output & Tutorial (3 cols) -->
+        <!-- RIGHT COLUMN: Output (3 cols) -->
         <div class="lg:col-span-3 space-y-5">
             
-            <button onclick="generatePrompt()" class="btn-primary w-full font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 flex items-center justify-center gap-2 text-lg">
-                <i class="fas fa-wand-magic-sparkles"></i> BUAT PROMPT (JSON)
-            </button>
-
             <!-- Output Display -->
-            <div class="bg-[#231f20] rounded-xl shadow-inner border border-gray-600 overflow-hidden flex flex-col h-[400px]">
-                <div class="flex justify-between items-center px-4 py-2 bg-[#1a1a1a] border-b border-gray-600 shrink-0">
-                    <span class="text-xs text-gray-400 font-mono">prompt_data.json</span>
-                    <button onclick="copyToClipboard()" class="text-xs bg-[#f79039] hover:bg-[#e68a35] text-white font-bold px-3 py-1 rounded transition-colors">
-                        <i class="fas fa-copy mr-1"></i> Copy
+            <div class="bg-[#231f20] rounded-xl shadow-xl border-2 border-[#f79039] overflow-hidden flex flex-col h-[450px]">
+                <div class="flex justify-between items-center px-4 py-3 bg-[#1a1a1a] border-b border-gray-600 shrink-0">
+                    <span class="text-xs text-[#febd26] font-mono font-bold"><i class="fas fa-code mr-1"></i> prompt_data.json</span>
+                    <button onclick="copyToClipboard()" class="text-xs bg-[#f79039] hover:bg-[#e68a35] text-white font-bold px-3 py-1.5 rounded transition-colors shadow-sm">
+                        <i class="fas fa-copy mr-1"></i> COPY
                     </button>
                 </div>
-                <div class="p-4 overflow-y-auto custom-scrollbar flex-grow">
-                    <pre id="jsonOutput" class="text-xs font-mono whitespace-pre-wrap leading-relaxed text-gray-300"></pre>
+                <div class="p-4 overflow-y-auto custom-scrollbar flex-grow bg-[#231f20]">
+                    <pre id="jsonOutput" class="text-xs font-mono whitespace-pre-wrap leading-relaxed text-gray-300">Silakan pilih opsi dan klik tombol di bawah...</pre>
                 </div>
             </div>
 
-            <!-- Asset Links -->
-            <div class="bg-[#fffbee] border border-yellow-200 p-4 rounded-xl text-sm shadow-sm">
-                <h4 class="font-bold text-[#231f20] mb-2"><i class="fas fa-download mr-2 text-[#f79039]"></i>Aset Referensi (Wajib)</h4>
-                <p class="text-xs text-gray-600 mb-3">Download gambar ini untuk diupload ke AI Generator sebagai referensi:</p>
-                
-                <div class="space-y-3">
-                    <div class="border-b border-yellow-100 pb-2">
-                        <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Karakter & Atribut</p>
-                        <ul class="space-y-1.5 text-xs">
-                            <li><a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-user-tie w-5 text-gray-400"></i> Bung Itung (Karakter Utama)</a></li>
-                            <li><a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-mobile w-5 text-gray-400"></i> HP Logo SE2026</a></li>
-                            <li><a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-hat-cowboy w-5 text-gray-400"></i> Topi SE2026</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Logo Resmi</p>
-                        <ul class="space-y-1.5 text-xs">
-                            <li><a href="https://drive.google.com/file/d/1w3mQmBImsMMM3QsYEvrn5zD1Me1UNkyu/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Vertikal</a></li>
-                            <li><a href="https://drive.google.com/file/d/1UC5VU4tCz4D35wiOWTZBYLFnc5ReYWGP/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Horizontal</a></li>
-                            <li><a href="https://drive.google.com/file/d/1CfmgL2gnwJ-rjw5BUo0YEU01nur-WT4v/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Tanpa Teks</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- Disclaimer Box -->
+             <div class="bg-yellow-50 border-l-4 border-[#febd26] p-4 text-xs text-gray-600 shadow-sm rounded-r-lg">
+                <p class="font-bold text-[#d97706] mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> Catatan Penting:</p>
+                <p>Akurasi AI >67%. Jika hasil pertama belum pas (misal wajah berubah), silakan <strong>generate ulang</strong> dengan langkah dan prompt yang sama. Pastikan Image Weight disesuaikan.</p>
+            </div>
+
+             <!-- Floating Action Button (Mobile) / Fixed Button (Desktop) -->
+            <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 lg:static lg:bg-transparent lg:p-0 lg:border-0 z-50">
+                 <button onclick="generatePrompt()" class="btn-primary w-full font-extrabold py-4 px-6 rounded-xl shadow-2xl transform transition hover:-translate-y-1 flex items-center justify-center gap-2 text-xl tracking-wide">
+                    <i class="fas fa-wand-magic-sparkles animate-pulse"></i> BUAT PROMPT (JSON)
+                </button>
             </div>
 
         </div>
@@ -477,41 +473,37 @@
                 <div class="space-y-4">
                     <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Langkah-langkah</h3>
                     <ol class="list-decimal list-outside ml-4 space-y-3 text-sm text-gray-700">
-                        <li>Pilih <strong>Format Gambar</strong>, <strong>Identitas (Gender & Warna Kulit)</strong>.</li>
+                        <li>Pilih <strong>Format, Identitas, Ekspresi</strong>, dan <strong>Aksesoris</strong>.</li>
                         <li>Pilih <strong>Kategori KBLI 2025</strong>.</li>
-                        <li>Pilih <strong>Aksesoris</strong>. Jika ingin item adat daerah/spesifik, pilih opsi <em>Custom</em> dan ketik deskripsinya (Misal: "Buku Catatan", "Kain Ulos").</li>
-                        <li>Klik <strong>Buat Prompt (JSON)</strong> dan klik <strong>Copy</strong>.</li>
-                        <li>Buka AI Generator (Gemini/Midjourney).</li>
-                        <li><strong>PENTING:</strong> Upload gambar referensi (Bung Itung, dll) dan juga gambar barang adat kustom Anda jika ada.</li>
-                        <li>Paste JSON prompt yang sudah dicopy.</li>
+                        <li>Klik <strong>BUAT PROMPT (JSON)</strong> lalu klik <strong>COPY</strong>.</li>
+                        <li>Buka <strong><a href="https://gemini.google.com" target="_blank" class="text-blue-600 hover:underline">gemini.google.com</a></strong> (login akun Google).</li>
+                        <li>Klik <strong>🍌 Buat Gambar</strong>.
+                            <ul class="list-disc ml-5 mt-1 text-xs text-gray-500">
+                                <li>Gratis: Pilih model "Cepat" (Nano Banana).</li>
+                                <li>Berbayar: Pilih model "Pro" (Nano Banana Pro).</li>
+                            </ul>
+                        </li>
+                        <li><strong>WAJIB:</strong> Upload gambar referensi (Bung Itung, dll) yang tersedia di menu "Aset Referensi". Jika menggunakan item custom, upload juga gambarnya.</li>
+                        <li>Paste JSON prompt, lalu tekan Enter.</li>
                     </ol>
-                    <div class="mt-4 p-4 bg-[#fffbee] rounded-lg border border-yellow-200">
-                        <p class="text-sm font-bold text-[#231f20]"><i class="fab fa-youtube text-red-600 mr-2"></i>Video Tutorial Lengkap:</p>
-                        <a href="http://s.bps.go.id/tutorialpromptbungitung" target="_blank" class="text-blue-600 underline text-sm break-all">http://s.bps.go.id/tutorialpromptbungitung</a>
-                    </div>
                 </div>
                 <div class="space-y-4">
-                    <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Tips Agar Hasil Akurat</h3>
+                    <h3 class="font-bold text-lg border-b-2 border-[#f79039] pb-2 inline-block">Tips Hasil Akurat</h3>
                     <ul class="list-disc list-outside ml-4 space-y-2 text-sm text-gray-700">
-                        <li><strong>Smart Hijab:</strong> Jika memilih Hijab, pakaian otomatis menyesuaikan menjadi lengan panjang dan tertutup (syar'i).</li>
-                        <li><strong>Fitur Custom Pegang:</strong> Barang yang dimasukkan di "Custom Aksesoris Badan" akan otomatis diposisikan sedang dipegang oleh karakter.</li>
-                        <li><strong>Konsistensi Wajah:</strong> Selalu upload gambar "Bung Itung Original" sebagai referensi utama.</li>
-                        <li><strong>Masalah Kulit:</strong> Jika memilih warna kulit gelap, turunkan settingan Image Weight ke "Low" atau "Medium" pada AI Generator agar instruksi warna kulit lebih didengar.</li>
+                        <li><strong>Wajah Konsisten:</strong> Upload selalu gambar "Bung Itung Original" sebagai referensi utama.</li>
+                        <li><strong>Kulit & Rambut:</strong> Jika memilih kulit Gelap Eksotis, gunakan setting Image Weight <strong>Medium/Low</strong> agar AI mau mengubah warna kulit dari referensi asli.</li>
+                        <li><strong>Custom Item:</strong> Jika mengisi kolom custom, gunakan bahasa Inggris sederhana (misal: "Red Batik Shirt") dan upload gambar contohnya.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Hidden Asset Modal -->
-    <div id="assetModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Asset Modal -->
+    <div id="assetModal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="toggleAssetModal()"></div>
-
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="toggleAssetModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <!-- Modal panel -->
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
@@ -519,26 +511,24 @@
                             <i class="fas fa-folder-open text-[#f79039]"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Aset Referensi (Wajib)</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500 mb-4">Download gambar ini untuk diupload ke AI Generator sebagai referensi:</p>
-                                
+                            <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Aset Referensi (Wajib Download)</h3>
+                            <div class="mt-4">
                                 <div class="bg-[#fffbee] border border-yellow-200 p-4 rounded-xl text-sm shadow-sm text-left">
-                                    <div class="space-y-3">
-                                        <div class="border-b border-yellow-100 pb-2">
-                                            <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Karakter & Atribut</p>
-                                            <ul class="space-y-1.5 text-xs">
-                                                <li><a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-user-tie w-5 text-gray-400"></i> Bung Itung (Karakter Utama)</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-mobile w-5 text-gray-400"></i> HP Logo SE2026</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-hat-cowboy w-5 text-gray-400"></i> Topi SE2026</a></li>
+                                    <div class="space-y-4">
+                                        <div class="border-b border-yellow-100 pb-3">
+                                            <p class="text-xs font-bold text-[#f79039] uppercase tracking-wide mb-2">Karakter & Atribut Utama</p>
+                                            <ul class="space-y-2 text-xs">
+                                                <li><a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center p-2 bg-white rounded border border-gray-100 hover:shadow-sm transition"><i class="fas fa-user-tie w-6 text-gray-400"></i> Bung Itung (Original)</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center p-2 bg-white rounded border border-gray-100 hover:shadow-sm transition"><i class="fas fa-mobile w-6 text-gray-400"></i> HP Logo SE2026</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center p-2 bg-white rounded border border-gray-100 hover:shadow-sm transition"><i class="fas fa-hat-cowboy w-6 text-gray-400"></i> Topi SE2026</a></li>
                                             </ul>
                                         </div>
                                         <div>
-                                            <p class="text-[10px] font-bold text-[#f79039] uppercase tracking-wide mb-1">Logo Resmi</p>
-                                            <ul class="space-y-1.5 text-xs">
-                                                <li><a href="https://drive.google.com/file/d/1w3mQmBImsMMM3QsYEvrn5zD1Me1UNkyu/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Vertikal</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1UC5VU4tCz4D35wiOWTZBYLFnc5ReYWGP/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Horizontal</a></li>
-                                                <li><a href="https://drive.google.com/file/d/1CfmgL2gnwJ-rjw5BUo0YEU01nur-WT4v/view?usp=drive_link" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-image w-5 text-gray-400"></i> Logo Tanpa Teks</a></li>
+                                            <p class="text-xs font-bold text-[#f79039] uppercase tracking-wide mb-2">Logo Resmi</p>
+                                            <ul class="space-y-2 text-xs">
+                                                <li><a href="https://drive.google.com/file/d/1w3mQmBImsMMM3QsYEvrn5zD1Me1UNkyu/view?usp=drive_link" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center p-2 bg-white rounded border border-gray-100 hover:shadow-sm transition"><i class="fas fa-image w-6 text-gray-400"></i> Logo Vertikal</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1UC5VU4tCz4D35wiOWTZBYLFnc5ReYWGP/view?usp=drive_link" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center p-2 bg-white rounded border border-gray-100 hover:shadow-sm transition"><i class="fas fa-image w-6 text-gray-400"></i> Logo Horizontal</a></li>
+                                                <li><a href="https://drive.google.com/file/d/1CfmgL2gnwJ-rjw5BUo0YEU01nur-WT4v/view?usp=drive_link" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium flex items-center p-2 bg-white rounded border border-gray-100 hover:shadow-sm transition"><i class="fas fa-image w-6 text-gray-400"></i> Logo Tanpa Teks</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -548,7 +538,7 @@
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleAssetModal()">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleAssetModal()">
                         Tutup
                     </button>
                 </div>
@@ -556,9 +546,9 @@
         </div>
     </div>
 
-    <footer class="bg-[#231f20] text-white text-center py-8">
-        <p class="font-bold text-sm">Tim Pelaksana SE 2026 - Tim Kerja Kehumasan</p>
-        <p class="text-xs mt-1 text-[#febd26]">BPS Provinsi Papua ©2026 @faldodaffa</p>
+    <footer class="bg-[#231f20] text-white text-center py-6 mt-auto">
+        <p class="font-bold text-xs">Tim Pelaksana SE 2026 - Tim Kerja Kehumasan</p>
+        <p class="text-[10px] mt-1 text-[#febd26] opacity-80">BPS Provinsi Papua ©2026 @faldodaffa</p>
     </footer>
 
     <script>
@@ -591,7 +581,6 @@
         };
 
         // --- UI FUNCTIONS ---
-
         function selectFormat(fmt) {
             document.getElementById('formatValue').value = fmt;
             document.getElementById('fmt-single').classList.remove('selected');
@@ -599,30 +588,24 @@
             document.getElementById('fmt-' + fmt).classList.add('selected');
             
             const poseSection = document.getElementById('poseSection');
-            if (fmt === 'multipose') {
-                poseSection.classList.add('opacity-50', 'pointer-events-none');
-            } else {
-                poseSection.classList.remove('opacity-50', 'pointer-events-none');
-            }
+            if (fmt === 'multipose') poseSection.classList.add('opacity-50', 'pointer-events-none');
+            else poseSection.classList.remove('opacity-50', 'pointer-events-none');
         }
 
         function selectGender(gender) {
             document.getElementById('genderValue').value = gender;
             const buttons = document.querySelectorAll('.gender-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('selected', 'bg-[#febd26]', 'border-[#f79039]', 'text-[#231f20]', 'font-bold');
-                btn.classList.add('bg-white', 'text-gray-600');
-            });
+            buttons.forEach(btn => btn.classList.remove('selected', 'bg-[#f79039]', 'border-[#f79039]', 'text-white', 'font-semibold'));
+            buttons.forEach(btn => btn.classList.add('bg-white', 'text-gray-600'));
+            
             const selectedBtn = document.getElementById('btn-' + gender);
-            selectedBtn.classList.add('selected', 'bg-[#febd26]', 'border-[#f79039]', 'text-[#231f20]', 'font-bold');
+            selectedBtn.classList.add('selected', 'bg-[#f79039]', 'border-[#f79039]', 'text-white', 'font-semibold');
             selectedBtn.classList.remove('bg-white', 'text-gray-600');
         }
 
         function selectPose(pose) {
             document.getElementById('poseValue').value = pose;
-            document.querySelectorAll('#poseSection .option-card').forEach(el => {
-                el.classList.remove('selected');
-            });
+            document.querySelectorAll('#poseSection .option-card').forEach(el => el.classList.remove('selected'));
             document.getElementById('pose-' + pose).classList.add('selected');
         }
 
@@ -685,7 +668,6 @@
                 }
 
                 if(document.getElementById('acc_noken').checked) {
-                    // DETAILED NOKEN PROMPT INJECTION (UPDATED v5.2)
                     let nokenDetail = "Wearing a rustic, handmade Noken-style shoulder bag made from pliable, non-rigid natural beige bark fibers. The bag is unstructured and hangs limply slung over shoulder, its soft form entirely shaped by a small brown kraft paper notebook and a sleek black smartphone visible through the open-loop mesh.";
                     accessoriesList.push(nokenDetail);
                 }
@@ -697,13 +679,16 @@
                 let charName = (gender === 'male') ? "Bung Itung" : "Mbak Sasa";
                 let baseFacialFeatures = "distinctive large round bulbous nose, cartoonish head-to-body ratio"; 
                 
-                // Expression Logic
+                // Expression Logic (Updated)
                 const expressionMap = {
                     'happy': "Wide friendly smile, eyebrows raised slightly, eyes squinted in curve (happy)",
+                    'laugh': "Laughing out loud, eyes closed or squinted, open mouth smile, joyful expression",
                     'sad': "Mouth curved downwards, eyebrows tilted inwards and upwards, teary or closed eyes (sad/disappointed)",
-                    'angry': "Furrowed brow, eyes glaring intently, jaw set stiffly, mouth either shouting or pressed tightly together (angry/fierce)",
-                    'fear': "Eyes wide open with small pupils, eyebrows raised high, mouth gaping open (fearful/shocked)",
-                    'shy': "Blush marks on cheeks, avoiding eye contact, shy smile (shy/bashful)"
+                    'shock': "Jaw dropped open, eyes wide open, eyebrows raised high (shocked)",
+                    'surprised': "Mouth slightly open, eyes widened, eyebrows raised (mildly surprised)",
+                    'fear': "Eyes wide open with small pupils, eyebrows raised high, mouth gaping open (fearful)",
+                    'shy': "Blush marks on cheeks, avoiding eye contact, shy smile (shy/bashful)",
+                    'thinking': "Hand on chin, looking upwards or sideways, thoughtful expression"
                 };
                 let expressionDesc = expressionMap[expression] || expressionMap['happy'];
                 let facialFeatures = `${baseFacialFeatures}. Expression: ${expressionDesc}`;
@@ -714,7 +699,7 @@
                 let recommendedImageWeight = "HIGH (1.0 - 1.2)";
 
                 if (skinTone === 'dark') {
-                    ethnicityDesc = "Dark brown skin tone covering FACE, NECK, ARMS, and HANDS.";
+                    ethnicityDesc = "Dark black skin tone covering FACE, NECK, ARMS, and HANDS.";
                     skinInstruction = "ENSURE UNIFORM DARK SKIN TONE ON FACE AND BODY. DO NOT MAKE HANDS WHITE.";
                     recommendedImageWeight = "LOW to MEDIUM (0.6 - 0.8) - Critical to allow skin color change";
                 } else if (skinTone === 'tan') {
@@ -733,7 +718,6 @@
                 } else if (headgearSelection === 'topi_se2026') {
                     headgearDesc = "Wearing Black cap with orange visor and 'Sensus Ekonomi 2026' logo";
                 } else if (headgearSelection === 'mahkota_papua') {
-                    // PRESET MAHKOTA PAPUA (DETAILED)
                     headgearDesc = "Wearing detailed traditional Papuan headdress. Upper section: Stiff, coarse dark brown fibers radiating upwards (cassowary feathers). Lower section: Woven headband decorated with off-white cowrie shells in floral patterns, bright red beads, and vibrant yellow piping.";
                 } else if (headgearSelection === 'contextual') {
                     if (kbliInfo.headgear_context !== "None") headgearDesc = "Wearing " + kbliInfo.headgear_context;
@@ -750,13 +734,19 @@
                 if (gender === 'female_hijab') {
                     additionalNegativePrompts += ", visible hair, hair roots, hair texture";
                     genderDesc = `Female version of Bung Itung (Hijab). Wearing yellow hijab tucked in. **Note: ${headgearActive ? headgearDesc + ' is worn ON TOP of the hijab.' : ''} ABSOLUTELY NO HAIR VISIBLE.** Facial features: ${facialFeatures}.`;
-                     if (skinTone === 'dark') ethnicityDesc = "Dark brown skin tone covering FACE and HANDS (Body covered).";
+                     if (skinTone === 'dark') ethnicityDesc = "Dark black skin tone covering FACE and HANDS (Body covered).";
                 } else {
                     let hairDescription = "short neat black hair."; 
                     if (gender !== 'male') hairDescription = "Hair: Ponytail."; 
 
+                    // LOGIC: If Dark Skin AND No Headgear, Force Curly Hair
                     if (skinTone === 'dark') {
-                         hairDescription = (gender === 'male') ? "short curly black hair." : "Hair: Curly Ponytail.";
+                        if (!headgearActive) {
+                            hairDescription = (gender === 'male') ? "short curly black hair." : "Hair: Curly Ponytail.";
+                        } else {
+                            // If hat is worn, hair might be tucked
+                            hairDescription = (gender === 'male') ? "short curly black hair." : "Hair: Curly Ponytail.";
+                        }
                     }
 
                     if (headgearActive) {
@@ -770,11 +760,14 @@
                 let attireDesc = "";
                 let customAttireText = "";
 
+                // COLOR CORRECTION FOR ATTIRE
+                let uniformDesc = "Official census uniform: Black vest with Jingga Nadi Orange (#f79039) accents, yellow collared shirt underneath, ID Card lanyard.";
+
                 if (attireMode === 'custom_attire') {
                     customAttireText = document.getElementById('customAttireText').value || "Custom Traditional Attire";
                     attireDesc = `Wearing ${customAttireText}.`;
                 } else if (attireMode === 'original' || sectorCode === 'NONE') {
-                    attireDesc = "Wearing Official census uniform: Black vest with yellow accents, yellow collared shirt underneath, ID Card lanyard.";
+                    attireDesc = `Wearing ${uniformDesc}`;
                 } else {
                     attireDesc = `Wearing ${kbliInfo.attire_context}.`;
                 }
@@ -803,7 +796,8 @@
                          'open_palms': "Presenting gesture with open palms facing slightly upwards",
                          'hand_on_chest': "One hand placed respectfully on the chest over the heart, service gesture",
                          'thank_you': "Hands clasped together in a gesture of gratitude or slight bow saying thank you",
-                         'ready': "Standing tall with hands on hips or crossed, ready for action (sigap)"
+                         'ready': "Standing tall with hands on hips or crossed, ready for action (sigap)",
+                         'salute': "Casual salute gesture to a friend, hand near forehead"
                      };
                      poseDesc = poseMap[pose] || "Standing";
                 } else {
@@ -824,7 +818,6 @@
                 }
                 
                 let itemsHeld = handhelds.join(", ");
-                // Filter out smartphone from wearables as it's handheld
                 let wearablesStr = accessoriesList.filter(a => !a.includes("Smartphone")).join(", ");
                 let papuaForce = (skinTone === 'dark') ? "DARK BROWN SKIN. " : "";
 
@@ -834,7 +827,7 @@
                 const promptData = {
                     "meta": {
                         "project": "SE2026 Nusantara",
-                        "version": "5.3 (Final UX)"
+                        "version": "5.4 (Color Corrected)"
                     },
                     "generation_settings": {
                         "aspect_ratio": format === 'single' ? "2:3 (Portrait)" : "1:1 (Square)",
@@ -845,7 +838,7 @@
                         "custom_uploads": []
                     },
                     "final_positive_prompt": fullPrompt,
-                    "negative_prompt": "photorealistic, real human, ugly, distorted, bad anatomy, " + additionalNegativePrompts
+                    "negative_prompt": "photorealistic, real human, ugly, distorted, bad anatomy, yellow color (avoid yellow, use orange), " + additionalNegativePrompts
                 };
 
                 // Dynamic Upload Instructions
@@ -895,4 +888,3 @@
     </script>
 </body>
 </html>
-}
