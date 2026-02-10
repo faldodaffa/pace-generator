@@ -4,6 +4,9 @@ PACE SE2026 adalah aplikasi generator prompt cerdas berbasis web yang dirancang 
 
 Aplikasi ini berfungsi sebagai jembatan antara standar branding BPS dan teknologi Generative AI (seperti Google Gemini, Midjourney, atau DALL-E), memastikan setiap gambar yang dihasilkan memiliki konsistensi karakter, akurasi atribut, dan relevansi konteks ekonomi.
 
+⚠️ Disclaimer Teknis:
+Tingkat keberhasilan langsung mendapatkan gambar yang sesuai harapan adalah > 67%. Mengingat sifat Generative AI yang dinamis, ada kemungkinan hasil belum sempurna di percobaan pertama. Jika demikian, silakan lakukan generate ulang menggunakan langkah dan prompt yang sama.
+
 Fitur Utama
 1. Standardisasi Karakter "Bung Itung" (Anatomy Lock)
 Menggunakan algoritma prompting khusus untuk menjaga konsistensi bentuk wajah (mata, hidung, rasio kepala) maskot "Bung Itung" dan "Mbak Sasa", meskipun diubah ke dalam berbagai pose, gender, atau kostum.
@@ -38,4 +41,5 @@ Cara Penggunaan Singkat
 Tim Pelaksana SE 2026 - Tim Kerja Kehumasan
 BPS Provinsi Papua
 © 2026
+
 Konsep & Pengembangan: @faldodaffa
