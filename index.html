@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PACE - Prompt Assistant & Creative Engine v5.8 (Final Release)</title>
+    <title>PACE - Prompt Assistant & Creative Engine v5.9 (Mobile Optimized)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -134,11 +134,25 @@
         .json-string { color: #a5d6ff; }
         .json-number { color: #d2a8ff; }
         .json-boolean { color: #ff7b72; font-weight: bold; }
+        
+        /* Badges for Changelog */
+        .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-right: 6px; }
+        .badge-fix { background-color: #fee2e2; color: #b91c1c; }
+        .badge-ui { background-color: #e0e7ff; color: #4338ca; }
+        .badge-docs { background-color: #d1fae5; color: #047857; }
+        .badge-new { background-color: #fef3c7; color: #b45309; }
+        .badge-logic { background-color: #f3e8ff; color: #7e22ce; }
+        .badge-safety { background-color: #ffedd5; color: #c2410c; }
 
         /* Responsive Fixes */
         @media (max-width: 640px) {
             .pose-grid, .expression-grid { grid-template-columns: repeat(3, 1fr); }
             body { padding-bottom: 140px; }
+            /* Memastikan tombol di header tidak terlalu besar di HP */
+            header button, header a { 
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.7rem !important;
+            }
         }
     </style>
 </head>
@@ -152,17 +166,20 @@
                     SE
                 </div>
                 <div>
-                    <h1 class="text-lg md:text-xl font-extrabold tracking-tight leading-none">PACE <span class="text-[#f79039]">v5.8</span></h1>
-                    <p class="text-gray-400 text-[10px] md:text-xs font-medium tracking-wide">Final Release</p>
+                    <!-- UPDATED: Version 5.9 and Full Name -->
+                    <h1 class="text-lg md:text-xl font-extrabold tracking-tight leading-none">PACE <span class="text-[#f79039]">v5.9</span></h1>
+                    <p class="text-gray-400 text-[10px] md:text-xs font-medium tracking-wide">Prompt Assistant & Creative Engine</p>
                 </div>
             </div>
             <!-- Header Buttons -->
-            <div class="flex items-center gap-3 text-right text-xs">
-                <button onclick="toggleAssetModal()" class="hidden md:inline-flex items-center bg-gray-800 border border-gray-600 hover:border-[#febd26] text-gray-300 hover:text-[#febd26] font-semibold py-2 px-4 rounded-lg transition-all duration-300 group">
-                    <i class="fas fa-folder-open mr-2 group-hover:animate-bounce"></i>Aset
+            <div class="flex items-center gap-2 md:gap-3 text-right text-xs">
+                <button onclick="toggleAssetModal()" class="inline-flex items-center bg-gray-800 border border-gray-600 hover:border-[#febd26] text-gray-300 hover:text-[#febd26] font-semibold py-2 px-3 md:px-4 rounded-lg transition-all duration-300 group">
+                    <i class="fas fa-folder-open md:mr-2 text-sm group-hover:animate-bounce"></i>
+                    <span class="ml-1 md:inline">Aset</span> 
                 </button>
-                <a href="#tutorial" class="inline-flex items-center bg-[#f79039] hover:bg-[#ea580c] text-white font-bold py-2 px-4 rounded-lg transition-colors shadow-lg hover:shadow-orange-500/50">
-                    <i class="fas fa-info-circle md:mr-2"></i><span class="hidden md:inline">Petunjuk</span>
+                <a href="#tutorial" class="inline-flex items-center bg-[#f79039] hover:bg-[#ea580c] text-white font-bold py-2 px-3 md:px-4 rounded-lg transition-colors shadow-lg hover:shadow-orange-500/50">
+                    <i class="fas fa-info-circle md:mr-2 text-sm"></i>
+                    <span class="hidden md:inline">Petunjuk</span>
                 </a>
             </div>
         </div>
@@ -173,6 +190,22 @@
         <!-- LEFT COLUMN: Identity & Style (4 cols) -->
         <div class="lg:col-span-4 space-y-6">
             
+            <!-- Disclaimer Box - STRATEGIC PLACEMENT -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl shadow-sm animate-fade-in-down">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-lightbulb text-amber-500 text-xl mt-1"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-bold text-amber-800">Tips Pro:</h3>
+                        <div class="text-xs text-amber-700 mt-1 leading-relaxed">
+                            <p>Akurasi wajah sangat bergantung pada <strong>"Upload Gambar"</strong>. Jangan hanya copy-paste teks prompt.</p> 
+                            <p class="mt-1">Gunakan tombol <span class="font-bold bg-white px-1 rounded border border-amber-200">+</span> di Gemini untuk upload file referensi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 1. Format Gambar -->
             <div class="p-6 rounded-2xl shadow-sm input-card">
                 <label class="flex items-center text-sm font-bold text-[#231f20] mb-4">
@@ -544,13 +577,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Disclaimer Box -->
-             <div class="bg-amber-50 border border-amber-200 p-4 text-xs text-gray-600 rounded-xl shadow-sm">
-                <p class="font-bold text-amber-700 mb-1 flex items-center"><i class="fas fa-lightbulb mr-2 text-amber-500"></i>Tips Pro:</p>
-                <p class="leading-relaxed">Akurasi wajah bergantung pada <strong>"Upload Gambar"</strong>. Jangan hanya paste teks. Gunakan fitur upload di Gemini.</p>
-            </div>
-
         </div>
     </main>
     
@@ -589,10 +615,23 @@
                         <li class="relative before:absolute before:-left-[31px] before:top-1.5 before:w-3 before:h-3 before:bg-gray-300 before:rounded-full">Di tampilan percakapan baru, klik tombol <strong>"🍌 Buat Gambar"</strong> atau <strong>"🍌 Create Image"</strong>.</li>
                         <li class="relative before:absolute before:-left-[31px] before:top-1.5 before:w-3 before:h-3 before:bg-red-500 before:rounded-full font-bold text-gray-800">
                              PENTING: Klik tombol <strong>"+"</strong> lalu pilih <strong>"Upload File"</strong>, kemudian pilih:
-                             <ul class="list-disc ml-4 mt-2 font-normal text-gray-600">
-                                 <li><code>bungitung.png</code> (Wajib untuk wajah)</li>
-                                 <li><code>topise2026.png</code> (Jika pakai Topi SE)</li>
-                                 <li><code>hpse2026.png</code> (Jika pakai HP SE)</li>
+                             <!-- AUDIT FIX: Hyperlinks added for direct download -->
+                             <ul class="list-none ml-2 mt-2 font-normal text-gray-600 space-y-1">
+                                 <li class="flex items-center">
+                                     <i class="fas fa-download text-[#f79039] mr-2 text-xs"></i>
+                                     <a href="https://drive.google.com/file/d/1LTIJKv5JVzy2mKmOk0lDocJ7uuBEtlVc/view?usp=drive_link" target="_blank" class="text-blue-600 underline decoration-dotted hover:text-blue-800 font-mono text-xs">bungitung.png</a> 
+                                     <span class="text-xs ml-1 text-gray-500">(Wajib untuk wajah)</span>
+                                </li>
+                                 <li class="flex items-center">
+                                     <i class="fas fa-download text-[#f79039] mr-2 text-xs"></i>
+                                     <a href="https://drive.google.com/file/d/1-RDcopPf85uUsPK4OkczpbnH4fDGm28e/view?usp=drive_link" target="_blank" class="text-blue-600 underline decoration-dotted hover:text-blue-800 font-mono text-xs">topise2026.png</a>
+                                     <span class="text-xs ml-1 text-gray-500">(Jika pakai Topi SE)</span>
+                                </li>
+                                 <li class="flex items-center">
+                                     <i class="fas fa-download text-[#f79039] mr-2 text-xs"></i>
+                                     <a href="https://drive.google.com/file/d/1RkeIIOjUCuea57enOZf6wrvdpDhAB2Eh/view?usp=drive_link" target="_blank" class="text-blue-600 underline decoration-dotted hover:text-blue-800 font-mono text-xs">hpse2026.png</a>
+                                     <span class="text-xs ml-1 text-gray-500">(Jika pakai HP SE)</span>
+                                </li>
                              </ul>
                              <div class="mt-2 text-xs font-normal text-amber-700 bg-amber-50 p-2 rounded border border-amber-200">
                                 <i class="fas fa-info-circle mr-1"></i> Bisa menggunakan Gemini Free (Flash), namun hasil lebih akurat dengan versi Pro.
@@ -647,9 +686,92 @@
         </div>
     </div>
 
+    <!-- VERSION HISTORY MODAL (NEW) -->
+    <div id="versionModal" class="fixed inset-0 z-[80] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="toggleVersionModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full border border-gray-100 relative">
+                <!-- Header Modal -->
+                <div class="bg-[#231f20] px-4 py-4 sm:px-6 flex justify-between items-center">
+                    <h3 class="text-lg leading-6 font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-code-branch text-[#f79039]"></i> PACE Generator - Version History
+                    </h3>
+                    <button onclick="toggleVersionModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- Content Modal -->
+                <div class="px-4 py-5 sm:p-6 max-h-[70vh] overflow-y-auto custom-scrollbar bg-gray-50">
+                    
+                    <!-- v5.9 -->
+                    <div class="mb-8 border-l-4 border-[#f79039] pl-4 relative">
+                        <div class="absolute -left-[21px] top-0 w-3 h-3 rounded-full bg-[#f79039] ring-4 ring-white"></div>
+                        <h4 class="font-bold text-lg text-[#231f20] flex items-center">v5.9 <span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full border border-green-200">Current - Mobile Optimized</span></h4>
+                        <p class="text-xs text-gray-500 mb-3 italic">Fokus pada aksesibilitas seluler dan efisiensi alur kerja.</p>
+                        <ul class="space-y-2 text-xs text-gray-700">
+                            <li><span class="badge badge-fix">FIX</span> <strong>Mobile Header:</strong> Memperbaiki bug tombol "Aset" yang hilang pada tampilan smartphone. Layout header kini responsif penuh.</li>
+                            <li><span class="badge badge-ui">UI/UX</span> <strong>Strategic Tips Placement:</strong> Memindahkan kotak "Tips Pro" ke dalam jendela terminal agar instruksi krusial pasti terbaca.</li>
+                            <li><span class="badge badge-docs">DOCS</span> <strong>Direct Hyperlink:</strong> Nama file aset pada panduan kini dapat diklik untuk download langsung.</li>
+                            <li><span class="badge badge-ui">UI/UX</span> <strong>Mobile Typography:</strong> Penyesuaian ukuran font dan padding agar lebih nyaman dibaca di layar kecil.</li>
+                        </ul>
+                    </div>
+
+                    <!-- v5.8 -->
+                    <div class="mb-8 border-l-4 border-gray-200 pl-4 relative opacity-75 hover:opacity-100 transition-opacity">
+                        <div class="absolute -left-[21px] top-0 w-3 h-3 rounded-full bg-gray-300 ring-4 ring-white"></div>
+                        <h4 class="font-bold text-base text-gray-600">v5.8 (Final Release)</h4>
+                        <p class="text-xs text-gray-400 mb-2">Rilis resmi dengan integrasi multimedia dan atribusi lengkap.</p>
+                        <ul class="space-y-1.5 text-xs text-gray-500">
+                            <li><span class="badge badge-docs">DOCS</span> Multimedia Integration: Tutorial Youtube dan Galeri.</li>
+                            <li><span class="badge badge-docs">DOCS</span> Refined Instructions: Memperjelas langkah upload di Gemini.</li>
+                            <li><span class="badge badge-new">UPDATE</span> Footer: Atribusi Tim Kerja Kehumasan & Developer.</li>
+                        </ul>
+                    </div>
+
+                    <!-- v5.7 -->
+                    <div class="mb-8 border-l-4 border-gray-200 pl-4 relative opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="absolute -left-[21px] top-0 w-3 h-3 rounded-full bg-gray-300 ring-4 ring-white"></div>
+                        <h4 class="font-bold text-sm text-gray-600">v5.7 (Final Audit & Safety)</h4>
+                         <ul class="space-y-1 text-xs text-gray-500 mt-2">
+                            <li><span class="badge badge-ui">UI/UX</span> Terminal Look: Output JSON bergaya Code Editor.</li>
+                            <li><span class="badge badge-safety">SAFETY</span> Warning Label: Label "Wajib Upload" pada HP SE2026.</li>
+                        </ul>
+                    </div>
+
+                    <!-- v5.6 -->
+                    <div class="mb-8 border-l-4 border-gray-200 pl-4 relative opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="absolute -left-[21px] top-0 w-3 h-3 rounded-full bg-gray-300 ring-4 ring-white"></div>
+                        <h4 class="font-bold text-sm text-gray-600">v5.6 (Exotic Edition)</h4>
+                        <ul class="space-y-1 text-xs text-gray-500 mt-2">
+                            <li><span class="badge badge-logic">LOGIC</span> SARA Safe Label: "Coklat Eksotis" (Warm Umber).</li>
+                            <li><span class="badge badge-ui">UI/UX</span> Visual Overhaul: Rounded UI & Soft Shadows.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Older Versions Collapsed -->
+                    <div class="text-center">
+                        <span class="text-xs text-gray-400 font-mono">... v5.5, v5.4, v5.3, v5.2, v5.1, v5.0, v4.1, v4.0, v3.x ...</span>
+                    </div>
+
+                </div>
+                <div class="bg-gray-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200">
+                    <button type="button" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-5 py-2 bg-[#f79039] text-sm font-bold text-white hover:bg-[#ea580c] focus:outline-none sm:w-auto transition-all" onclick="toggleVersionModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-[#231f20] text-white text-center py-8 mt-auto border-t border-gray-800">
         <p class="font-bold text-sm tracking-wide">Tim Pelaksana SE 2026 - Tim Kerja Kehumasan dan Protokoler</p>
         <p class="text-xs mt-2 text-gray-500">BPS Provinsi Papua ©2026 <br> Developer : @faldodaffa</p>
+        <!-- Added Version History Button -->
+        <button onclick="toggleVersionModal()" class="mt-4 text-[10px] text-gray-600 hover:text-[#f79039] transition-colors border border-gray-700 hover:border-[#f79039] px-3 py-1 rounded-full">
+            <i class="fas fa-code-branch mr-1"></i> v5.9 (History)
+        </button>
     </footer>
 
     <script>
@@ -777,6 +899,16 @@
         // Modal Function
         function toggleAssetModal() {
             const modal = document.getElementById('assetModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Version Modal Function
+        function toggleVersionModal() {
+            const modal = document.getElementById('versionModal');
             if (modal.classList.contains('hidden')) {
                 modal.classList.remove('hidden');
             } else {
