@@ -794,7 +794,7 @@
         // --- DATA LOGIC ---
         const kbliData = {
             "NONE": { label: "Tanpa Konteks Sektor", headgear_context: "None", attire_context: "Standard Bung Itung Vest", held_items: "", ground_items: "", bg: "Clean studio background, neutral color" },
-            "A": { label: "Pertanian, Kehutanan, Perikanan", headgear_context: "Traditional bamboo farmer hat (caping)", attire_context: "Farmer outfit with rolled-up sleeves", held_items: "holding a rice sickle", ground_items: "basket of vegetables, rice plants", bg: "rice field landscape, lush green forest, fishing boat at sea, plantation area" },
+            "A": { label: "Pertanian, Kehutanan, dan Perikanan", headgear_context: "Traditional bamboo farmer hat (caping)", attire_context: "Farmer outfit with rolled-up sleeves", held_items: "holding a rice sickle", ground_items: "basket of vegetables, rice plants", bg: "rice field landscape, lush green forest, fishing boat at sea, plantation area" },
             "B": { label: "Pertambangan", headgear_context: "Yellow safety construction helmet", attire_context: "Mining worker outfit with high-vis vest", held_items: "holding a geological hammer", ground_items: "piles of rocks, pickaxe, blueprints", bg: "open pit mine, quarry site with excavators in distance, oil rig in background" },
             "C": { label: "Industri Pengolahan", headgear_context: "Factory safety cap", attire_context: "Factory worker jumpsuit or apron", held_items: "holding a wrench", ground_items: "manufactured products, tool box", bg: "factory interior with blurred machinery, assembly line background, industrial warehouse" },
             "D": { label: "Listrik, Gas, Uap", headgear_context: "Safety helmet with ear protection", attire_context: "Technician uniform with safety gloves", held_items: "holding an electrical meter or tablet displaying energy charts", ground_items: "insulated tools, cables", bg: "power plant facility, solar panel field, electrical substation towers in distance" },
@@ -1100,7 +1100,7 @@
                 let wearablesStr = accessoriesList.filter(a => !a.includes("Smartphone")).join(", ");
                 let papuaForce = (skinTone === 'dark') ? "RICH WARM BROWN SKIN. " : "";
 
-                const fullPrompt = `(Image Reference Style). 3D Render. Pixar Disney Style. CHARACTER: ${charName} (${genderDesc}). **CRITICAL: KEEP FACIAL SHAPE IDENTICAL TO REFERENCE.** ${ethnicityDesc} ${skinInstruction} ${papuaForce} \n\nWEARABLES: ${headgearDesc}. ${attireDesc} ${wearablesStr}. \n\nACTION: ${poseDesc}. ${itemsHeld}. \n\nENV: ${envDesc} ${itemsGround}.`;
+                const fullPrompt = `(Image Reference Style). 3D Render. Pixar Disney Style. CHARACTER: ${charName} (${genderDesc}). **CRITICAL: KEEP FACIAL SHAPE IDENTICAL TO REFERENCE.** **HUMAN ANATOMY: ONLY TWO ARMS, TWO HANDS** ${ethnicityDesc} ${skinInstruction} ${papuaForce} \n\nWEARABLES: ${headgearDesc}. ${attireDesc} ${wearablesStr}. \n\nACTION: ${poseDesc}. ${itemsHeld}. \n\nENV: ${envDesc} ${itemsGround}.`;
 
                 // JSON Object
                 const promptData = {
@@ -1117,7 +1117,7 @@
                         "custom_uploads": []
                     },
                     "final_positive_prompt": fullPrompt,
-                    "negative_prompt": "photorealistic, real human, pitch black skin, grey skin, ugly, distorted, bad anatomy, yellow color (avoid yellow, use orange), " + additionalNegativePrompts
+                    "negative_prompt": "photorealistic, real human, pitch black skin, grey skin, ugly, distorted, bad anatomy, yellow color (avoid yellow, use orange), extra limbs, extra arms, three arms, four arms, extra legs, extra hands, mutated hands, " + additionalNegativePrompts
                 };
 
                 // Dynamic Upload Instructions
