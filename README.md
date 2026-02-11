@@ -1,7 +1,12 @@
 # PACE SE2026 (Prompt Assistant & Creative Engine)
+<img width="1024" height="559" alt="PACE" src="https://github.com/user-attachments/assets/006c5c2c-1246-4c1f-8791-ccc26e0015a5" />
+
 
 🌐 Coba Sekarang:
 https://faldodaffa.github.io/pace-generator/
+
+🎨 Galeri Hasil Generate:
+https://photos.app.goo.gl/HDuFuneri11EWinh6
 
 💻 Source Code (GitHub):
 https://github.com/faldodaffa/pace-generator
